@@ -41,4 +41,12 @@ class Course extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Get the topics for the company.
+     */
+    public function topics()
+    {
+        return $this->hasMany(Topic::class);
+    }
 }

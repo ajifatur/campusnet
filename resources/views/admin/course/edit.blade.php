@@ -9,12 +9,13 @@
     <div class="col-lg-10 col-md-9">
         <div class="card">
             <div class="card-body">
-                <form method="post" action="{{ route('admin.course.store') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('admin.course.update') }}" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="id" value="{{ $course->id }}">
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Nama <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
-                            <input type="text" name="name" class="form-control form-control-sm {{ $errors->has('name') ? 'border-danger' : '' }}" value="{{ old('name') }}" autofocus>
+                            <input type="text" name="name" class="form-control form-control-sm {{ $errors->has('name') ? 'border-danger' : '' }}" value="{{ $course->name }}" autofocus>
                             @if($errors->has('name'))
                             <div class="small text-danger">{{ $errors->first('name') }}</div>
                             @endif
@@ -26,7 +27,7 @@
                             <select name="category" class="form-select form-select-sm {{ $errors->has('category') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih--</option>
                                 @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                <option value="{{ $category->id }}" {{ $course->category->id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('category'))
@@ -37,7 +38,7 @@
                     <div class="row">
                         <label class="col-lg-2 col-md-3 col-form-label">Deskripsi <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
-                            <textarea name="description" class="form-control form-control-sm {{ $errors->has('description') ? 'border-danger' : '' }}" rows="3">{{ old('description') }}</textarea>
+                            <textarea name="description" class="form-control form-control-sm {{ $errors->has('description') ? 'border-danger' : '' }}" rows="3">{{ $course->description }}</textarea>
                             @if($errors->has('description'))
                             <div class="small text-danger">{{ $errors->first('description') }}</div>
                             @endif

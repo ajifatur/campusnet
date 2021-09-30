@@ -13,7 +13,7 @@
     @include('campusnet::layouts/_navbar')
 
     <!-- Content -->
-    <div class="container my-5">
+    <div class="container-fluid my-5">
         @yield('content')
     </div>
 

@@ -6,8 +6,10 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-use Ajifatur\Campusnet\Models\Course;
 use Ajifatur\Campusnet\Models\Category;
+use Ajifatur\Campusnet\Models\Course;
+use Ajifatur\Campusnet\Models\Topic;
+use Ajifatur\Campusnet\Models\Material;
 
 class CourseController extends \App\Http\Controllers\Controller
 {
@@ -88,7 +90,13 @@ class CourseController extends \App\Http\Controllers\Controller
      */
     public function detail($id)
     {
-        //
+        // Get the course
+        $course = Course::findOrFail($id);
+
+        // View
+        return view('campusnet::admin/course/detail', [
+            'course' => $course
+        ]);
     }
 
     /**
@@ -99,12 +107,16 @@ class CourseController extends \App\Http\Controllers\Controller
      */
     public function edit($id)
     {
-        // Get the vacancy
-        $vacancy = Vacancy::findOrFail($id);
+        // Get the course
+        $course = Course::findOrFail($id);
+
+        // Get categories
+        $categories = Category::all();
 
         // View
-        return view('admin/vacancy/edit', [
-            'vacancy' => $vacancy
+        return view('campusnet::admin/course/edit', [
+            'course' => $course,
+            'categories' => $categories,
         ]);
     }
 
@@ -118,9 +130,9 @@ class CourseController extends \App\Http\Controllers\Controller
     {
         // Validation
         $validator = Validator::make($request->all(), [
-            'position' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'name' => 'required|max:200',
+            'category' => 'required',
+            'description' => 'required',
         ]);
         
         // Check errors
@@ -129,19 +141,15 @@ class CourseController extends \App\Http\Controllers\Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
         else{
-            // Get company
-            $company = Position::find($request->position)->company;
-
-            // Update the vacancy
-            $vacancy = Vacancy::find($request->id);
-            $vacancy->company_id = $company ? $company->id : 0;
-            $vacancy->position_id = $request->position;
-            $vacancy->start_date = generate_date_format($request->start_date, 'y-m-d');
-            $vacancy->end_date = generate_date_format($request->end_date, 'y-m-d');
-            $vacancy->save();
+            // Update the course
+            $course = Course::find($request->id);
+            $course->category_id = $request->category;
+            $course->name = $request->name;
+            $course->description = $request->description;
+            $course->save();
 
             // Redirect
-            return redirect()->route('admin.vacancy.index')->with(['message' => 'Berhasil mengupdate data.']);
+            return redirect()->route('admin.course.index')->with(['message' => 'Berhasil mengupdate data.']);
         }
     }
 
@@ -153,34 +161,13 @@ class CourseController extends \App\Http\Controllers\Controller
      */
     public function delete(Request $request)
     {
-        // Get the vacancy
-        $vacancy = Vacancy::find($request->id);
+        // Get the course
+        $course = Course::find($request->id);
 
-        // Delete the vacancy
-        $vacancy->delete();
+        // Delete the course
+        $course->delete();
 
         // Redirect
-        return redirect()->route('admin.vacancy.index')->with(['message' => 'Berhasil menghapus data.']);
-    }
-
-    /**
-     * Show the registration form.
-     *
-     * @param  string  $code
-     * @return \Illuminate\Http\Response
-     */
-    public function registrationForm($code)
-    {
-        // Get religions
-        $religions = Religion::all();
-
-        // Get relationships
-        $relationships = Relationship::all();
-
-        // View
-        return view('admin/vacancy/register', [
-            'religions' => $religions,
-            'relationships' => $relationships,
-        ]);
+        return redirect()->route('admin.course.index')->with(['message' => 'Berhasil menghapus data.']);
     }
 }
