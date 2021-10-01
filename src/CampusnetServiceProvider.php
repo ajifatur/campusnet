@@ -21,4 +21,25 @@ class CampusnetServiceProvider extends ServiceProvider
         // Add package's migration
         $this->loadMigrationsFrom(__DIR__.'/../migrations');
 	}
+
+    /**
+     * Register the application services.
+     */
+    public function register()
+    {
+        // Load helpers
+        $this->loadHelpers();
+	}
+
+    /**
+     * Load helpers.
+     * 
+	 * @return void
+     */
+    protected function loadHelpers()
+    {
+        foreach(glob(__DIR__.'/Helpers/*.php') as $filename){
+            require_once $filename;
+        }
+	}
 }

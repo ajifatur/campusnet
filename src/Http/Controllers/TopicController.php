@@ -155,6 +155,6 @@ class TopicController extends \App\Http\Controllers\Controller
 
             echo 'Berhasil mengurutkan data.';
         }
-        else echo 'Berhasil mengurutkan data.';
+        else echo 'Terjadi kesalahan dalam mengurutkan data.';
     }
 }

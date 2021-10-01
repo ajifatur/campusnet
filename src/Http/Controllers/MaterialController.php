@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Ajifatur\Campusnet\Models\Course;
 use Ajifatur\Campusnet\Models\Topic;
 use Ajifatur\Campusnet\Models\Material;
+use Ajifatur\Campusnet\Models\Type;
 
 class MaterialController extends \App\Http\Controllers\Controller
 {
@@ -27,10 +28,14 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Get the topic
         $topic = Topic::findOrFail($topic_id);
 
+        // Get types
+        $types = Type::all();
+
         // View
         return view('campusnet::admin/material/create', [
             'course' => $course,
-            'topic' => $topic
+            'topic' => $topic,
+            'types' => $types,
         ]);
     }
 
@@ -45,6 +50,7 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
+            'type' => 'required',
         ]);
         
         // Check errors
@@ -59,7 +65,7 @@ class MaterialController extends \App\Http\Controllers\Controller
             // Save the material
             $material = new Material;
             $material->topic_id = $request->topic_id;
-            $material->type_id = 0;
+            $material->type_id = $request->type;
             $material->name = $request->name;
             $material->content = '';
             $material->num_order = $latest_material ? $latest_material->num_order + 1 : 1;
@@ -89,11 +95,15 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Get the material
         $material = Material::where('topic_id','=',$topic_id)->findOrFail($material_id);
 
+        // Get types
+        $types = Type::all();
+
         // View
         return view('campusnet::admin/material/edit', [
             'course' => $course,
             'topic' => $topic,
             'material' => $material,
+            'types' => $types,
         ]);
     }
 
@@ -108,6 +118,8 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
+            'type' => 'required',
+            'content' => $request->type == 3 ? 'required' : ''
         ]);
         
         // Check errors
@@ -116,9 +128,19 @@ class MaterialController extends \App\Http\Controllers\Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
         else{
+            // Set the content
+            if($request->type == 1)
+                $content = htmlentities(quill_html($request->content, 'assets/images/quill/'));
+            elseif($request->type == 3)
+                $content = $request->content;
+            else
+                $content = '';
+
             // Update the material
             $material = Material::find($request->id);
             $material->name = $request->name;
+            $material->type_id = $request->type;
+            $material->content = $content;
             $material->save();
 
             // Redirect
@@ -134,13 +156,36 @@ class MaterialController extends \App\Http\Controllers\Controller
      */
     public function delete(Request $request)
     {
-        // Get the topic
-        $topic = Topic::find($request->id);
+        // Get the material
+        $material = Material::find($request->id);
 
-        // Delete the topic
-        $topic->delete();
+        // Delete the material
+        $material->delete();
 
         // Redirect
-        return redirect()->route('admin.course.detail', ['id' => $topic->course_id])->with(['message' => 'Berhasil menghapus data.']);
+        return redirect()->route('admin.course.detail', ['id' => $material->topic->course_id])->with(['message' => 'Berhasil menghapus data.']);
+    }
+
+    /**
+     * Sort the resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sort(Request $request)
+    {
+        // Loop materials
+        if(count($request->get('ids')) > 0) {
+            foreach($request->get('ids') as $key=>$id) {
+                $material = Material::find($id);
+                if($material) {
+                    $material->num_order = $key + 1;
+                    $material->save();
+                }
+            }
+
+            echo 'Berhasil mengurutkan data.';
+        }
+        else echo 'Terjadi kesalahan dalam mengurutkan data.';
     }
 }

@@ -5,7 +5,7 @@ namespace Ajifatur\Campusnet\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Material extends Model
+class Type extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Material extends Model
      *
      * @var string
      */
-    protected $table = 'materials';
+    protected $table = 'types';
 
     /**
      * Fill the model with an array of attributes.
@@ -24,21 +24,13 @@ class Material extends Model
      *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    protected $fillable = ['name', 'content', 'num_order'];
+    protected $fillable = ['name', 'code'];
 
     /**
-     * Get the topic that owns the course.
+     * Get the materials for the category.
      */
-    public function topic()
+    public function materials()
     {
-        return $this->belongsTo(Topic::class, 'topic_id');
-    }
-
-    /**
-     * Get the type that owns the course.
-     */
-    public function type()
-    {
-        return $this->belongsTo(Type::class, 'type_id');
+        return $this->hasMany(Material::class);
     }
 }
