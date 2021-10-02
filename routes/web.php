@@ -39,3 +39,6 @@ Route::get('/admin/course/material/create/{course_id}/{topic_id}/{material_id}',
 Route::post('/admin/material/update', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@update')->name('admin.material.update');
 Route::post('/admin/material/delete', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@delete')->name('admin.material.delete');
 Route::post('/admin/material/sort', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@sort')->name('admin.material.sort');
+
+// Media
+Route::post('/admin/media/upload', '\Ajifatur\Campusnet\Http\Controllers\MediaController@upload')->name('admin.media.upload');

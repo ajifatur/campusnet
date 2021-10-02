@@ -47,10 +47,21 @@ class MaterialController extends \App\Http\Controllers\Controller
      */
     public function store(Request $request)
     {
+        // Content validation
+        if($request->type_code == 'text')
+            $content_validator = '';
+        elseif($request->type_code == 'uploaded-video')
+            $content_validator = 'required';
+        elseif($request->type_code == 'youtube-video')
+            $content_validator = 'required';
+        else
+            $content_validator = '';
+
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
             'type' => 'required',
+            'content' => $content_validator
         ]);
         
         // Check errors
@@ -67,7 +78,7 @@ class MaterialController extends \App\Http\Controllers\Controller
             $material->topic_id = $request->topic_id;
             $material->type_id = $request->type;
             $material->name = $request->name;
-            $material->content = '';
+            $material->content = $request->content;
             $material->num_order = $latest_material ? $latest_material->num_order + 1 : 1;
             $material->save();
 
@@ -115,11 +126,18 @@ class MaterialController extends \App\Http\Controllers\Controller
      */
     public function update(Request $request)
     {
+        // Content validation
+        if($request->type == 1)
+            $content_validator = '';
+        elseif($request->type == 2)
+            $content_validator = 'required';
+        elseif($request->type == 3)
+            $content_validator = 'required';
+
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
-            'type' => 'required',
-            'content' => $request->type == 3 ? 'required' : ''
+            'content' => $content_validator
         ]);
         
         // Check errors
