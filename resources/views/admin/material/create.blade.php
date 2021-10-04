@@ -153,7 +153,7 @@
         }
         else if(type_code === "uploaded-video") {
             var name = $("input[name=name]").val();
-            var content = $(_contentField).find(".row[data-code="+type_code+"]").find("input[name=content]").val();
+            var content = $(_contentField).find(".row[data-code="+type_code+"]").find("input[type=hidden][name=content]").val();
 
             // If validation is success, upload file
             if(name !== "" && content !== "") {
@@ -165,6 +165,14 @@
                 // Upload via AJAX
                 var ajax = new XMLHttpRequest();
                 ajax.upload.addEventListener("progress", progressHandler, false);
+                ajax.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        var result = JSON.parse(this.responseText);
+                        $("input[type=hidden][name=content]").val(result.filename);
+                        $("input[type=file]").attr("disabled","disabled").val(null);
+                        $("form").submit();
+                    }
+                };
                 ajax.open("POST", "{{ route('admin.media.upload') }}", true);
                 ajax.send(form);
 
@@ -181,21 +189,15 @@
 <script type="text/javascript">
     // Progress handler
     let progressHandler = (event) => {
-        console.log(event);
-
         // Count percentage
         var percent = (event.loaded / event.total) * 100;
 
         // Show percentage
         $("#modal-progress").find(".progress-bar").text(Math.round(percent) + '%').css('width', Math.round(percent) + '%');
 
-        // Submit form
+        // Change progress class
         if(event.loaded === event.total && Math.round(percent) === 100) {
             $("#modal-progress").find(".progress-bar").addClass("bg-success");
-            window.setTimeout(() => {
-                $("input[type=file]").attr("disabled","disabled").val(null);
-                // $("form").submit();
-            }, 1000);
         };
     }
 </script>

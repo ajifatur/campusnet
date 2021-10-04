@@ -1,5 +1,18 @@
 <?php
 
+// File info
+if(!function_exists('file_info')) {
+    function file_info($filename) {
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $nameWithoutExtension = basename($filename, '.'.$extension);
+        return [
+            'name' => $filename,
+            'nameWithoutExtension' => $nameWithoutExtension,
+            'extension' => $extension
+        ];
+    }
+}
+
 // Quill HTML
 if(!function_exists('quill_html')) {
     function quill_html($html, $path_to_image) {
