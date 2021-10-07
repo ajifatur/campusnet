@@ -10,6 +10,7 @@ use Ajifatur\Campusnet\Models\Course;
 use Ajifatur\Campusnet\Models\Topic;
 use Ajifatur\Campusnet\Models\Material;
 use Ajifatur\Campusnet\Models\Type;
+use Ajifatur\Campusnet\Models\Assignment;
 
 class MaterialController extends \App\Http\Controllers\Controller
 {
@@ -47,22 +48,31 @@ class MaterialController extends \App\Http\Controllers\Controller
      */
     public function store(Request $request)
     {
-        // Content validation
-        if($request->type_code == 'text')
-            $content_validator = '';
-        elseif($request->type_code == 'uploaded-video')
-            $content_validator = 'required';
-        elseif($request->type_code == 'youtube-video')
-            $content_validator = 'required';
-        else
-            $content_validator = '';
+        // Content
+        if($request->type_code == 'text'):
+            $content_validator = ['content' => ''];
+            $content = htmlentities(quill_html($request->content, 'assets/images/quill/'));
+        elseif($request->type_code == 'uploaded-video'):
+            $content_validator = ['content' => 'required'];
+            $content = $request->content;
+        elseif($request->type_code == 'youtube-video'):
+            $content_validator = ['content' => 'required'];
+            $content = $request->content;
+        elseif($request->type_code == 'file'):
+            $content_validator = ['content' => 'required'];
+            $content = $request->content;
+        elseif($request->type_code == 'assignment'):
+            $content_validator = ['content.*' => 'required'];
+        else:
+            $content_validator = ['content' => ''];
+            $content = $request->content;
+        endif;
 
         // Validation
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), array_merge([
             'name' => 'required|max:200',
             'type' => 'required',
-            'content' => $content_validator
-        ]);
+        ], $content_validator));
         
         // Check errors
         if($validator->fails()){
@@ -73,12 +83,39 @@ class MaterialController extends \App\Http\Controllers\Controller
             // Get the latest material
             $latest_material = Material::where('topic_id','=',$request->topic_id)->orderBy('num_order','desc')->first();
 
+            // If the content type is assignment
+            if($request->type_code == 'assignment') {
+                // Split time
+                $start_at = null; $end_at = null;
+                $content_time = explode(' - ', $request->content['time']);
+                if(count($content_time) == 2) {
+                    // Start time
+                    $start_time = explode(' ', $content_time[0]);
+                    $start_at = count($start_time) == 2 ? format_date($start_time[0], 'y-m-d').' '.$start_time[1].':00' : null;
+
+                    // End time
+                    $end_time = explode(' ', $content_time[1]);
+                    $end_at = count($end_time) == 2 ? format_date($end_time[0], 'y-m-d').' '.$end_time[1].':00' : null;
+                }
+                
+                // Save the assignment
+                $assignment = new Assignment;
+                $assignment->name = $request->content['name'];
+                $assignment->description = $request->content['description'];
+                $assignment->start_at = $start_at;
+                $assignment->end_at = $end_at;
+                $assignment->save();
+
+                // Get the assignment id
+                $content = $assignment->id;
+            }
+
             // Save the material
             $material = new Material;
             $material->topic_id = $request->topic_id;
             $material->type_id = $request->type;
             $material->name = $request->name;
-            $material->content = $request->content;
+            $material->content = $content;
             $material->num_order = $latest_material ? $latest_material->num_order + 1 : 1;
             $material->save();
 

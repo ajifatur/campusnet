@@ -11,6 +11,29 @@ use Ajifatur\Campusnet\Models\Course;
 class MediaController extends \App\Http\Controllers\Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        // Get files in the directory
+        $files = [];
+        foreach(File::allFiles(public_path('assets/media')) as $file) {
+            if($request->query('type') == 'file')
+                array_push($files, $file->getRelativePathname());
+            elseif($request->query('type') == 'uploaded-video') {
+                $file_info = file_info($file->getRelativePathname());
+                if(in_array($file_info['extension'], ['mp4', 'mkv', 'mov', 'avi'])) array_push($files, $file->getRelativePathname());
+            }
+        }
+
+        // Response
+        return response()->json($files, 200);
+    }
+
+    /**
      * Upload the resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
