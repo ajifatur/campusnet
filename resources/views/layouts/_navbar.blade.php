@@ -18,22 +18,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pengajar</a>
                 </li>
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li> -->
             </ul>
-            <form class="d-flex">
-                <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-sm btn-outline-success" type="submit">Search</button>
-            </form>
+            <div class="d-flex">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Hi, John!
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="bi-person me-1"></i> Profil</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-gear me-1"></i> Pengaturan</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-power me-1"></i> Keluar</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
