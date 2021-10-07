@@ -16,6 +16,17 @@ if(!function_exists('format_date')){
     }
 }
 
+// Slug
+if(!function_exists('slug')){
+    function slug($string){
+        $result = strtolower($string);
+        $result = preg_replace("/[^a-z0-9\s-]/", "", $result);
+        $result = preg_replace("/\s+/", " ",$result);
+        $result = str_replace(" ", "-", $result);
+        return $result;
+    }
+}
+
 // File info
 if(!function_exists('file_info')) {
     function file_info($filename) {

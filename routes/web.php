@@ -45,3 +45,11 @@ Route::post('/admin/material/sort', '\Ajifatur\Campusnet\Http\Controllers\Materi
 
 // Media
 Route::post('/admin/media/upload', '\Ajifatur\Campusnet\Http\Controllers\MediaController@upload')->name('admin.media.upload');
+
+// Category
+Route::get('/admin/category', '\Ajifatur\Campusnet\Http\Controllers\CategoryController@index')->name('admin.category.index');
+Route::get('/admin/category/create', '\Ajifatur\Campusnet\Http\Controllers\CategoryController@create')->name('admin.category.create');
+Route::post('/admin/category/store', '\Ajifatur\Campusnet\Http\Controllers\CategoryController@store')->name('admin.category.store');
+Route::get('/admin/category/edit/{id}', '\Ajifatur\Campusnet\Http\Controllers\CategoryController@edit')->name('admin.category.edit');
+Route::post('/admin/category/update', '\Ajifatur\Campusnet\Http\Controllers\CategoryController@update')->name('admin.category.update');
+Route::post('/admin/category/delete', '\Ajifatur\Campusnet\Http\Controllers\CategoryController@delete')->name('admin.category.delete');

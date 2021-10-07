@@ -10,7 +10,7 @@
                     <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.course.index'))) ? 'active' : '' }}" href="{{ route('admin.course.index') }}">Kelas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Kategori</a>
+                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.category.index'))) ? 'active' : '' }}" href="{{ route('admin.category.index') }}">Kategori</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Media</a>
