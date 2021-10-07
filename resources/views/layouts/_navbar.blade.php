@@ -13,6 +13,9 @@
                     <a class="nav-link" href="#">Kategori</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#">Media</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">Pengajar</a>
                 </li>
                 <!-- <li class="nav-item dropdown">

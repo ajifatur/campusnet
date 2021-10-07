@@ -158,7 +158,7 @@
                         </div>
                     </div>
                     <div class="tab-pane py-3 fade" id="choose" role="tabpanel" aria-labelledby="choose-tab">
-                        <div class="list-group"></div>
+                        <div class="list-group">Memuat...</div>
                     </div>
                 </div>
             </div>
@@ -185,24 +185,14 @@
 @section('js')
 
 @include('campusnet::layouts/js/quill')
+@include('campusnet::layouts/js/daterangepicker')
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript">
     // Quill Editor
     QuillEditor("#quill-editor");
 
     // Daterangepicker
-    $("input[name='content[time]']").daterangepicker({
-        timePicker: true,
-        timePicker24Hour: true,
-        showDropdowns: true,
-        startDate: moment().startOf('hour'),
-        endDate: moment().startOf('hour').add(48, 'hour'),
-        locale: {
-            format: 'DD/MM/YYYY HH:mm'
-        }
-    });
+    DateRangePicker("input[name='content[time]']");
 
     // Show Modal File Event
     var modalFile = document.getElementById("modal-file");
@@ -229,7 +219,7 @@
                     success: function(files){
                         var html = '';
                         for(var i=0; i<files.length; i++) {
-                            html += '<a href="#" class="list-group-item list-group-item-action">' + files[i] + '</a>';
+                            html += '<a href="#" class="list-group-item list-group-item-action btn-choose-file" data-file="' + files[i] + '">' + files[i] + '</a>';
                         }
                         $("#choose .list-group").html(html);
                     }
@@ -283,12 +273,27 @@
         $("input:not([disabled])[type=file][name=content]").trigger("click");
     });
 
+    // Button Choose File
+    $(document).on("click", ".btn-choose-file", function(e) {
+        // Change value and text
+        e.preventDefault();
+        var type_code = $("input[name=type_code]").val();
+        var filename = $(this).data("file");
+        $(".row[data-code="+type_code+"]").find("input[type=hidden][name=content]").val(filename);
+        $(".row[data-code="+type_code+"]").find(".file-title span").text(filename);
+        $(".row[data-code="+type_code+"]").find(".file-title").removeClass("d-none");
+
+        // Hide modal
+        var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("modal-file"));
+        modal.hide();
+    });
+
     // Button Submit
     $(document).on("click", "button[type=submit]", function(e) {
         e.preventDefault();
         var type_code = $("input[name=type_code]").val();
         var name = $("input[name=name]").val();
-        var content = $("input[type=hidden][name=content][data-code="+type_code+"]").val();
+        var content = $("input[type=hidden][name=content][data-code='"+type_code+"']").val();
 
         if(type_code === "text") {
             var editor = document.querySelector("#quill-editor");
@@ -296,18 +301,16 @@
             $("textarea[name=content][data-code="+type_code+"]").text(html);
         }
         else if(type_code === "uploaded-video") {
-            if(name !== "" && content !== "") {
-                formProgress({
-                    content: document.getElementById("uploaded-video-file").files[0]
-                });
+            var file_content = document.getElementById("uploaded-video-file").files[0];
+            if(name !== "" && content !== "" && file_content !== undefined) {
+                formProgress({content: file_content});
                 return;
             }
         }
         else if(type_code === "file") {
-            if(name !== "" && content !== "") {
-                formProgress({
-                    content: document.getElementById("uploaded-file").files[0]
-                });
+            var file_content = document.getElementById("uploaded-file").files[0];
+            if(name !== "" && content !== "" && file_content !== undefined) {
+                formProgress({content: file_content});
                 return;
             }
         }
@@ -364,7 +367,7 @@
 @section('css')
 
 <link rel="stylesheet" type="text/css" href="https://campusdigital.id/assets/plugins/quill/quill.snow.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 <style type="text/css">
     #quill-editor {height: 400px;}
 </style>

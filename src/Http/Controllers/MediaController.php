@@ -25,7 +25,7 @@ class MediaController extends \App\Http\Controllers\Controller
                 array_push($files, $file->getRelativePathname());
             elseif($request->query('type') == 'uploaded-video') {
                 $file_info = file_info($file->getRelativePathname());
-                if(in_array($file_info['extension'], ['mp4', 'mkv', 'mov', 'avi'])) array_push($files, $file->getRelativePathname());
+                if(in_array($file_info['extension'], ['mp4', 'mkv', 'mov', 'avi', 'flv', 'mpg', 'mpeg'])) array_push($files, $file->getRelativePathname());
             }
         }
 

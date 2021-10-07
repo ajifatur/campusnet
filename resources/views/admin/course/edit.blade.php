@@ -38,7 +38,7 @@
                     <div class="row">
                         <label class="col-lg-2 col-md-3 col-form-label">Deskripsi <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
-                            <textarea name="description" class="form-control form-control-sm {{ $errors->has('description') ? 'border-danger' : '' }}" rows="3">{{ $course->description }}</textarea>
+                            <textarea name="description" class="form-control form-control-sm {{ $errors->has('description') ? 'border-danger' : '' }}" rows="5">{{ $course->description }}</textarea>
                             @if($errors->has('description'))
                             <div class="small text-danger">{{ $errors->first('description') }}</div>
                             @endif

@@ -100,7 +100,7 @@
 </form>
 
 <!-- Toast -->
-<div class="toast-container position-fixed top-0 end-0">
+<div class="toast-container position-fixed top-0 end-0 d-none">
     <div class="toast align-items-center text-white bg-success border-0" id="toast-sort-success" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body"></div>
@@ -187,6 +187,7 @@
 </script>
 <script type="text/javascript">
     let Toast = (message) => {
+        $(".toast-container").removeClass("d-none");
         $("#toast-sort-success").find(".toast-body").text(message);
         var toast = new bootstrap.Toast(document.getElementById("toast-sort-success"));
         toast.show();
