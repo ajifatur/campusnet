@@ -6,7 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-use Ajifatur\Campusnet\Models\Course;
+use Ajifatur\Campusnet\Models\Media;
 
 class MediaController extends \App\Http\Controllers\Controller
 {
@@ -18,19 +18,48 @@ class MediaController extends \App\Http\Controllers\Controller
      */
     public function index(Request $request)
     {
-        // Get files in the directory
-        $files = [];
-        foreach(File::allFiles(public_path('assets/media')) as $file) {
-            if($request->query('type') == 'file')
-                array_push($files, $file->getRelativePathname());
-            elseif($request->query('type') == 'uploaded-video') {
-                $file_info = file_info($file->getRelativePathname());
-                if(in_array($file_info['extension'], ['mp4', 'mkv', 'mov', 'avi', 'flv', 'mpg', 'mpeg'])) array_push($files, $file->getRelativePathname());
+        if($request->ajax()) {
+            // Get files in the directory
+            $files = [];
+            foreach(File::allFiles(public_path('assets/media')) as $file) {
+                if($request->query('type') == 'file')
+                    array_push($files, $file->getRelativePathname());
+                elseif($request->query('type') == 'uploaded-video') {
+                    $file_info = file_info($file->getRelativePathname());
+                    if(in_array($file_info['extension'], ['mp4', 'mkv', 'mov', 'avi', 'flv', 'mpg', 'mpeg'])) array_push($files, $file->getRelativePathname());
+                }
             }
-        }
 
-        // Response
-        return response()->json($files, 200);
+            // Response
+            return response()->json($files, 200);
+        }
+        else {
+            // Get media
+            $media = Media::all();
+
+            // View
+            return view('campusnet::admin/media/index', [
+                'media' => $media
+            ]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        // Get the media
+        $media = Media::find($request->id);
+
+        // Delete the media
+        $media->delete();
+
+        // Redirect
+        return redirect()->route('admin.media.index')->with(['message' => 'Berhasil menghapus data.']);
     }
 
     /**

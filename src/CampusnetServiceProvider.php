@@ -20,6 +20,10 @@ class CampusnetServiceProvider extends ServiceProvider
 
         // Add package's migration
         $this->loadMigrationsFrom(__DIR__.'/../migrations');
+
+        // Add middlewares
+        $router->aliasMiddleware('campusnet.user', \Ajifatur\Campusnet\Http\Middleware\UserMiddleware::class);
+        $router->aliasMiddleware('campusnet.guest', \Ajifatur\Campusnet\Http\Middleware\GuestMiddleware::class);
 	}
 
     /**

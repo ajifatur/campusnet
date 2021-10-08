@@ -6,4 +6,13 @@
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
+
+    // Button logout everywhere
+    $(document).on("click", ".btn-logout", function(e) {
+        e.preventDefault();
+        var ask = confirm("Anda yakin ingin keluar?");
+        if(ask) {
+            $("#form-logout").submit();
+        }
+    });
 </script>

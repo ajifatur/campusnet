@@ -2,8 +2,9 @@
 <script src="https://cdn.rawgit.com/kensnyder/quill-image-resize-module/3411c9a7/image-resize.min.js"></script>
 <script type="text/javascript">
     let QuillEditor = (selector) => {
+        let quill;
         if($(selector).length === 1) {
-            let quill = new Quill(selector, {
+            quill = new Quill(selector, {
                 modules: {
                     toolbar: [
                         [{'header': [1, 2, 3, 4, 5, 6, false]}],
@@ -26,7 +27,6 @@
                 readOnly: false
             });
         }
-        else quill = null;
 
         return quill;
     }

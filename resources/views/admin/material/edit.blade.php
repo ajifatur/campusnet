@@ -295,7 +295,6 @@
     let formProgress = (data) => {
         // Form
         var form = new FormData();
-        form.append("_token", "{{ csrf_token() }}");
         form.append("content", data.content);
 
         // Upload via AJAX
@@ -309,7 +308,7 @@
                 $("form").submit();
             }
         };
-        ajax.open("POST", "{{ route('admin.media.upload') }}", true);
+        ajax.open("POST", "{{ route('api.media.upload') }}", true);
         ajax.send(form);
 
         // Show modal
