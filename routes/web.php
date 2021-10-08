@@ -68,4 +68,12 @@ Route::group(['middleware' => ['campusnet.user']], function() {
     Route::get('/admin/media/edit/{id}', '\Ajifatur\Campusnet\Http\Controllers\MediaController@edit')->name('admin.media.edit');
     Route::post('/admin/media/update', '\Ajifatur\Campusnet\Http\Controllers\MediaController@update')->name('admin.media.update');
     Route::post('/admin/media/delete', '\Ajifatur\Campusnet\Http\Controllers\MediaController@delete')->name('admin.media.delete');
+
+    // User Settings
+    Route::get('/admin/settings/profile', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@profile')->name('admin.settings.profile');
+    Route::post('/admin/settings/profile/update', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@updateProfile')->name('admin.settings.profile.update');
+    Route::get('/admin/settings/account', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@account')->name('admin.settings.account');
+    Route::post('/admin/settings/account/update', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@updateAccount')->name('admin.settings.account.update');
+    Route::get('/admin/settings/password', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@password')->name('admin.settings.password');
+    Route::post('/admin/settings/password/update', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@updatePassword')->name('admin.settings.password.update');
 });

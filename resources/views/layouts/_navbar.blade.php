@@ -5,7 +5,10 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Dashboard</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.course.index'))) ? 'active' : '' }}" href="{{ route('admin.course.index') }}">Kelas</a>
                 </li>
@@ -20,14 +23,14 @@
                 </li>
             </ul>
             @if(Auth::check())
-            <div class="d-flex">
+            <div class="navbar-nav">
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Hai, {{ strtok(Auth::user()->name, " ") }}!
+                        Hai, {{ strtok(Auth::user()->name, " ") }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#"><i class="bi-person me-1"></i> Profil</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi-gear me-1"></i> Pengaturan</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.settings.profile') }}"><i class="bi-gear me-1"></i> Pengaturan</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item btn-logout" href="#"><i class="bi-power me-1"></i> Keluar</a></li>
                         <form id="form-logout" class="d-none" method="post" action="{{ route('auth.logout') }}">@csrf</form>
