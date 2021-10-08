@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-lg-2 col-md-3">
-        @include('campusnet::admin/course/_sidebar')
+        @include('campusnet::admin/user/_sidebar')
     </div>
     <div class="col-lg-10 col-md-9">
         <div class="card">
@@ -20,21 +20,19 @@
                         <thead class="bg-light">
                             <tr>
                                 <th>Nama</th>
-                                <th width="100">Kategori</th>
-                                <th width="150">Pengajar</th>
+                                <th width="150">Role</th>
                                 <th width="60">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($courses as $course)
+                            @foreach($users as $user)
                             <tr>
-                                <td><a href="{{ route('admin.course.detail', ['id' => $course->id]) }}">{{ $course->name }}</a></td>
-                                <td>{{ $course->category->name }}</td>
-                                <td>{{ $course->user->name }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->role->name }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.course.edit', ['id' => $course->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $course->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
+                                        <a href="{{ route('admin.media.edit', ['id' => $user->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
+                                        <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $user->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                     </div>
                                 </td>
                             </tr>
@@ -47,7 +45,7 @@
     </div>
 </div>
 
-<form class="form-delete d-none" method="post" action="{{ route('admin.course.delete') }}">
+<form class="form-delete d-none" method="post" action="{{ route('admin.user.delete') }}">
     @csrf
     <input type="hidden" name="id">
 </form>

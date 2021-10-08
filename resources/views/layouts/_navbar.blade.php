@@ -19,7 +19,7 @@
                     <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.media.index'))) ? 'active' : '' }}" href="{{ route('admin.media.index') }}">Media</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pengguna</a>
+                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.user.index'))) ? 'active' : '' }}" href="{{ route('admin.user.index') }}">Pengguna</a>
                 </li>
             </ul>
             @if(Auth::check())
