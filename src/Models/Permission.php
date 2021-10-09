@@ -25,4 +25,12 @@ class Permission extends Model
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     protected $fillable = ['name', 'code', 'num_order'];
+
+    /**
+     * The roles that belong to the permission.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Permission::class, 'role_permission', 'permission_id', 'role_id');
+    }
 }

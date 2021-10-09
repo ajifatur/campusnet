@@ -18,6 +18,9 @@ class RoleController extends \App\Http\Controllers\Controller
      */
     public function index(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get roles
         $roles = Role::all();
 
@@ -34,6 +37,9 @@ class RoleController extends \App\Http\Controllers\Controller
      */
     public function create()
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // View
         return view('campusnet::admin/role/create');
     }
@@ -77,6 +83,9 @@ class RoleController extends \App\Http\Controllers\Controller
      */
     public function edit($id)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get the role
         $role = Role::findOrFail($id);
 
@@ -127,6 +136,9 @@ class RoleController extends \App\Http\Controllers\Controller
      */
     public function delete(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        
         // Get the role
         $role = Role::find($request->id);
 

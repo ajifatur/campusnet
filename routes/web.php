@@ -88,6 +88,16 @@ Route::group(['middleware' => ['campusnet.user']], function() {
     Route::post('/admin/role/update', '\Ajifatur\Campusnet\Http\Controllers\RoleController@update')->name('admin.role.update');
     Route::post('/admin/role/delete', '\Ajifatur\Campusnet\Http\Controllers\RoleController@delete')->name('admin.role.delete');
 
+    // Permission
+    Route::get('/admin/permission', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@index')->name('admin.permission.index');
+    Route::get('/admin/permission/create', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@create')->name('admin.permission.create');
+    Route::post('/admin/permission/store', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@store')->name('admin.permission.store');
+    Route::get('/admin/permission/edit/{id}', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@edit')->name('admin.permission.edit');
+    Route::post('/admin/permission/update', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@update')->name('admin.permission.update');
+    Route::post('/admin/permission/delete', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@delete')->name('admin.permission.delete');
+    Route::post('/admin/permission/sort', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@sort')->name('admin.permission.sort');
+    Route::post('/admin/permission/change', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@change')->name('admin.permission.change');
+
     // User Settings
     Route::get('/admin/settings/profile', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@profile')->name('admin.settings.profile');
     Route::post('/admin/settings/profile/update', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@updateProfile')->name('admin.settings.profile.update');

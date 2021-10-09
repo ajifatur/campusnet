@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ajifatur\Campusnet\Models\Permission;
+use Ajifatur\Campusnet\Models\Role;
 
 class PermissionController extends \App\Http\Controllers\Controller
 {
@@ -18,12 +19,19 @@ class PermissionController extends \App\Http\Controllers\Controller
      */
     public function index(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get permissions
-        $permissions = Permission::all();
+        $permissions = Permission::orderBy('num_order','asc')->get();
+
+        // Get roles
+        $roles = Role::all();
 
         // View
         return view('campusnet::admin/permission/index', [
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'roles' => $roles,
         ]);
     }
 
@@ -34,8 +42,11 @@ class PermissionController extends \App\Http\Controllers\Controller
      */
     public function create()
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // View
-        return view('campusnet::admin/role/create');
+        return view('campusnet::admin/permission/create');
     }
 
     /**
@@ -49,7 +60,7 @@ class PermissionController extends \App\Http\Controllers\Controller
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
-            'code' => 'required|alpha_dash|unique:roles'
+            'code' => 'required|unique:permissions'
         ]);
         
         // Check errors
@@ -58,14 +69,18 @@ class PermissionController extends \App\Http\Controllers\Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
         else{
-            // Save the role
-            $role = new Role;
-            $role->name = $request->name;
-            $role->code = $request->code;
-            $role->save();
+            // Get the latest permission
+            $latest_permission = Permission::orderBy('num_order','desc')->first();
+
+            // Save the permission
+            $permission = new Permission;
+            $permission->name = $request->name;
+            $permission->code = $request->code;
+            $permission->num_order = $latest_permission ? $latest_permission->num_order + 1 : 1;
+            $permission->save();
 
             // Redirect
-            return redirect()->route('admin.role.index')->with(['message' => 'Berhasil menambah data.']);
+            return redirect()->route('admin.permission.index')->with(['message' => 'Berhasil menambah data.']);
         }
     }
 
@@ -77,12 +92,15 @@ class PermissionController extends \App\Http\Controllers\Controller
      */
     public function edit($id)
     {
-        // Get the role
-        $role = Role::findOrFail($id);
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
+        // Get the permission
+        $permission = Permission::findOrFail($id);
 
         // View
-        return view('campusnet::admin/role/edit', [
-            'role' => $role
+        return view('campusnet::admin/permission/edit', [
+            'permission' => $permission
         ]);
     }
 
@@ -98,7 +116,7 @@ class PermissionController extends \App\Http\Controllers\Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
             'code' => [
-                'required', 'alpha_dash', Rule::unique('roles')->ignore($request->id, 'id')
+                'required', Rule::unique('permissions')->ignore($request->id, 'id')
             ],
         ]);
         
@@ -108,14 +126,14 @@ class PermissionController extends \App\Http\Controllers\Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
         else{
-            // Update the role
-            $role = Role::find($request->id);
-            $role->name = $request->name;
-            $role->code = $request->code;
-            $role->save();
+            // Update the permission
+            $permission = Permission::find($request->id);
+            $permission->name = $request->name;
+            $permission->code = $request->code;
+            $permission->save();
 
             // Redirect
-            return redirect()->route('admin.role.index')->with(['message' => 'Berhasil mengupdate data.']);
+            return redirect()->route('admin.permission.index')->with(['message' => 'Berhasil mengupdate data.']);
         }
     }
 
@@ -127,13 +145,60 @@ class PermissionController extends \App\Http\Controllers\Controller
      */
     public function delete(Request $request)
     {
-        // Get the role
-        $role = Role::find($request->id);
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        
+        // Get the permission
+        $permission = Permission::find($request->id);
 
-        // Delete the role
-        $role->delete();
+        // Delete the permission
+        $permission->delete();
 
         // Redirect
-        return redirect()->route('admin.role.index')->with(['message' => 'Berhasil menghapus data.']);
+        return redirect()->route('admin.permission.index')->with(['message' => 'Berhasil menghapus data.']);
+    }
+
+    /**
+     * Sort the resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sort(Request $request)
+    {
+        // Loop permissions
+        if(count($request->get('ids')) > 0) {
+            foreach($request->get('ids') as $key=>$id) {
+                $permission = Permission::find($id);
+                if($permission) {
+                    $permission->num_order = $key + 1;
+                    $permission->save();
+                }
+            }
+
+            echo 'Berhasil mengurutkan data.';
+        }
+        else echo 'Terjadi kesalahan dalam mengurutkan data.';
+    }
+
+    /**
+     * Change the resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function change(Request $request)
+    {
+        // Get the permission
+        $permission = Permission::find($request->permission);
+
+        // Change status
+        if($permission) {
+            $permission->roles()->toggle($request->role);
+            echo 'Berhasil mengganti status hak akses.';
+        }
+        else {
+            echo 'Terjadi kesalahan dalam mengganti status hak akses.';
+        }
     }
 }

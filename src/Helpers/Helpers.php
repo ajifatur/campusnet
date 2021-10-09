@@ -1,5 +1,30 @@
 <?php
 
+use Ajifatur\Campusnet\Models\Permission;
+
+// Has access
+if(!function_exists('has_access')){
+    function has_access($permission_code, $role, $isAbort = true){
+        // Get the permission
+        $permission = Permission::where('code','=',$permission_code)->first();
+
+        // If the permission is not exist
+        if(!$permission) {
+            if($isAbort) abort(403);
+            else return false;
+        }
+
+        // Check role permission
+        if(in_array($role, $permission->roles()->pluck('role_id')->toArray())) {
+            return true;
+        }
+        else {
+            if($isAbort) abort(403);
+            else return false;
+        }
+    }
+}
+
 // Format tanggal
 if(!function_exists('format_date')){
     function format_date($date, $format){

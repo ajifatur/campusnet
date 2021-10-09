@@ -34,7 +34,7 @@ class LoginController extends \App\Http\Controllers\Controller
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/');
+            return redirect()->route('admin.dashboard');
         }
 
         return back()->withErrors([
@@ -56,6 +56,6 @@ class LoginController extends \App\Http\Controllers\Controller
     
         $request->session()->regenerateToken();
     
-        return redirect('/');
+        return redirect()->route('auth.login');
     }
 }

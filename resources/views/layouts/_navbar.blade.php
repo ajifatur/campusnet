@@ -12,9 +12,11 @@
                 <li class="nav-item">
                     <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.course.index'))) || is_int(strpos(Request::url(), route('admin.category.index'))) ? 'active' : '' }}" href="{{ route('admin.course.index') }}">Kelas</a>
                 </li>
+                @if(has_access('UserController::index', Auth::user()->role_id, false))
                 <li class="nav-item">
-                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.user.index'))) || is_int(strpos(Request::url(), route('admin.role.index'))) ? 'active' : '' }}" href="{{ route('admin.user.index') }}">Pengguna</a>
+                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.user.index'))) || is_int(strpos(Request::url(), route('admin.role.index'))) || is_int(strpos(Request::url(), route('admin.permission.index'))) ? 'active' : '' }}" href="{{ route('admin.user.index') }}">Pengguna</a>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.media.index'))) ? 'active' : '' }}" href="{{ route('admin.media.index') }}">Media</a>
                 </li>
