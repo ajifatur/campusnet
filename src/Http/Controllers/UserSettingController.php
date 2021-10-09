@@ -32,6 +32,7 @@ class UserSettingController extends \App\Http\Controllers\Controller
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
+            'birthdate' => 'required',
             'gender' => 'required',
             'phone_number' => 'required|numeric'
         ]);
@@ -45,6 +46,7 @@ class UserSettingController extends \App\Http\Controllers\Controller
             // Update the user profile
             $user = User::find(Auth::user()->id);
             $user->name = $request->name;
+            $user->birthdate = generate_date_format($request->birthdate, 'y-m-d');
             $user->gender = $request->gender;
             $user->phone_number = $request->phone_number;
             $user->save();
@@ -75,8 +77,12 @@ class UserSettingController extends \App\Http\Controllers\Controller
     {
         // Validation
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'username' => 'required|alpha_dash|min:4'
+            'email' => [
+                'required', 'email', Rule::unique('users')->ignore($request->id, 'id')
+            ],
+            'username' => [
+                'required', 'alpha_dash', 'min:4', Rule::unique('users')->ignore($request->id, 'id')
+            ],
         ]);
         
         // Check errors

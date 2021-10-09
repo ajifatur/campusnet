@@ -28,6 +28,9 @@ Route::group(['middleware' => ['campusnet.user']], function() {
     // Logout
     Route::post('/logout', '\Ajifatur\Campusnet\Http\Controllers\LoginController@logout')->name('auth.logout');
 
+    // Dashboard
+    Route::get('/admin', '\Ajifatur\Campusnet\Http\Controllers\DashboardController@index')->name('admin.dashboard');
+
     // Course
     Route::get('/admin/course', '\Ajifatur\Campusnet\Http\Controllers\CourseController@index')->name('admin.course.index');
     Route::get('/admin/course/create', '\Ajifatur\Campusnet\Http\Controllers\CourseController@create')->name('admin.course.create');
@@ -76,6 +79,14 @@ Route::group(['middleware' => ['campusnet.user']], function() {
     Route::get('/admin/user/edit/{id}', '\Ajifatur\Campusnet\Http\Controllers\UserController@edit')->name('admin.user.edit');
     Route::post('/admin/user/update', '\Ajifatur\Campusnet\Http\Controllers\UserController@update')->name('admin.user.update');
     Route::post('/admin/user/delete', '\Ajifatur\Campusnet\Http\Controllers\UserController@delete')->name('admin.user.delete');
+
+    // Role
+    Route::get('/admin/role', '\Ajifatur\Campusnet\Http\Controllers\RoleController@index')->name('admin.role.index');
+    Route::get('/admin/role/create', '\Ajifatur\Campusnet\Http\Controllers\RoleController@create')->name('admin.role.create');
+    Route::post('/admin/role/store', '\Ajifatur\Campusnet\Http\Controllers\RoleController@store')->name('admin.role.store');
+    Route::get('/admin/role/edit/{id}', '\Ajifatur\Campusnet\Http\Controllers\RoleController@edit')->name('admin.role.edit');
+    Route::post('/admin/role/update', '\Ajifatur\Campusnet\Http\Controllers\RoleController@update')->name('admin.role.update');
+    Route::post('/admin/role/delete', '\Ajifatur\Campusnet\Http\Controllers\RoleController@delete')->name('admin.role.delete');
 
     // User Settings
     Route::get('/admin/settings/profile', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@profile')->name('admin.settings.profile');

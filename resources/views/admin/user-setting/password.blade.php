@@ -67,18 +67,3 @@
 </div>
 
 @endsection
-
-@section('js')
-
-<script type="text/javascript">
-    // Button Toggle Password
-    $(document).on("click", ".btn-toggle-password", function(e) {
-        e.preventDefault();
-        var type = $(this).parents(".input-group").find("input").attr("type");
-        var icon = $(this).parents(".input-group").find("i").attr("class");
-        type === "password" ? $(this).parents(".input-group").find("input").attr("type","text") : $(this).parents(".input-group").find("input").attr("type","password");
-        icon === "bi-eye" ? $(this).parents(".input-group").find("i").attr("class","bi-eye-slash") : $(this).parents(".input-group").find("i").attr("class","bi-eye");
-    });
-</script>
-
-@endsection

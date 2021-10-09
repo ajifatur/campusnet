@@ -7,19 +7,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Dashboard</a>
+                    <a class="nav-link {{ Request::url() == route('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.course.index'))) ? 'active' : '' }}" href="{{ route('admin.course.index') }}">Kelas</a>
+                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.course.index'))) || is_int(strpos(Request::url(), route('admin.category.index'))) ? 'active' : '' }}" href="{{ route('admin.course.index') }}">Kelas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.category.index'))) ? 'active' : '' }}" href="{{ route('admin.category.index') }}">Kategori</a>
+                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.user.index'))) || is_int(strpos(Request::url(), route('admin.role.index'))) ? 'active' : '' }}" href="{{ route('admin.user.index') }}">Pengguna</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.media.index'))) ? 'active' : '' }}" href="{{ route('admin.media.index') }}">Media</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.user.index'))) ? 'active' : '' }}" href="{{ route('admin.user.index') }}">Pengguna</a>
                 </li>
             </ul>
             @if(Auth::check())

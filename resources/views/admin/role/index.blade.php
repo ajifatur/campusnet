@@ -20,23 +20,19 @@
                         <thead class="bg-light">
                             <tr>
                                 <th>Nama</th>
-                                <th width="150">Role</th>
-                                <th width="80">Status</th>
+                                <th>Kode</th>
                                 <th width="60">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($users as $user)
+                            @foreach($roles as $role)
                             <tr>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->role->name }}</td>
-                                <td><span class="badge {{ $user->status == 1 ? 'bg-success' : 'bg-danger' }}">{{ $user->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</span></td>
+                                <td>{{ $role->name }}</td>
+                                <td>{{ $role->code }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.user.edit', ['id' => $user->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
-                                        @if($user->role->code != 'admin')
-                                        <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $user->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
-                                        @endif
+                                        <a href="{{ route('admin.role.edit', ['id' => $role->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
+                                        <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $role->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                     </div>
                                 </td>
                             </tr>
@@ -49,7 +45,7 @@
     </div>
 </div>
 
-<form class="form-delete d-none" method="post" action="{{ route('admin.user.delete') }}">
+<form class="form-delete d-none" method="post" action="{{ route('admin.role.delete') }}">
     @csrf
     <input type="hidden" name="id">
 </form>

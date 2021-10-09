@@ -27,6 +27,18 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Tanggal Lahir <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="birthdate" class="form-control form-control-sm {{ $errors->has('birthdate') ? 'border-danger' : '' }}" value="{{ generate_date_format(Auth::user()->birthdate, 'd/m/y') }}">
+                                <span class="input-group-text"><i class="bi-calendar2"></i></span>
+                            </div>
+                            @if($errors->has('birthdate'))
+                            <div class="small text-danger">{{ $errors->first('birthdate') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             <div class="form-check">
@@ -67,5 +79,25 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('js')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    // Datepicker
+    $("input[name=birthdate]").datepicker({
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        autoclose: true
+    });
+</script>
+
+@endsection
+
+@section('css')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 @endsection
