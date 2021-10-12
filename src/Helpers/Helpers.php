@@ -25,22 +25,6 @@ if(!function_exists('has_access')){
     }
 }
 
-// Format tanggal
-if(!function_exists('format_date')){
-    function format_date($date, $format){
-        if($format == 'd/m/y'){
-            $explode = explode("-", $date);
-            return count($explode) == 3 ? $explode[2].'/'.$explode[1].'/'.$explode[0] : '';
-        }
-        elseif($format == 'y-m-d'){
-            $explode = explode("/", $date);
-            return count($explode) == 3 ? $explode[2].'-'.$explode[1].'-'.$explode[0] : '';
-        }
-        else
-            return '';
-    }
-}
-
 // Slug
 if(!function_exists('slug')){
     function slug($string){

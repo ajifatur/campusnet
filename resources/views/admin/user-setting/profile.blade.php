@@ -30,7 +30,7 @@
                         <label class="col-lg-2 col-md-3 col-form-label">Tanggal Lahir <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             <div class="input-group input-group-sm">
-                                <input type="text" name="birthdate" class="form-control form-control-sm {{ $errors->has('birthdate') ? 'border-danger' : '' }}" value="{{ generate_date_format(Auth::user()->birthdate, 'd/m/y') }}">
+                                <input type="text" name="birthdate" class="form-control form-control-sm {{ $errors->has('birthdate') ? 'border-danger' : '' }}" value="{{ date('d/m/Y', strtotime(Auth::user()->birthdate)) }}">
                                 <span class="input-group-text"><i class="bi-calendar2"></i></span>
                             </div>
                             @if($errors->has('birthdate'))

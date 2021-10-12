@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Ajifatur\Campusnet\Helpers\Date;
 use Ajifatur\Campusnet\Models\User;
 use Ajifatur\Campusnet\Models\Role;
 
@@ -82,7 +83,7 @@ class UserController extends \App\Http\Controllers\Controller
             $user = new User;
             $user->role_id = $request->role;
             $user->name = $request->name;
-            $user->birthdate = generate_date_format($request->birthdate, 'y-m-d');
+            $user->birthdate = Date::change($request->birthdate);
             $user->gender = $request->gender;
             $user->phone_number = $request->phone_number;
             $user->email = $request->email;
@@ -158,7 +159,7 @@ class UserController extends \App\Http\Controllers\Controller
             $user = User::find($request->id);
             $user->role_id = $request->role;
             $user->name = $request->name;
-            $user->birthdate = generate_date_format($request->birthdate, 'y-m-d');
+            $user->birthdate = Date::change($request->birthdate);
             $user->gender = $request->gender;
             $user->phone_number = $request->phone_number;
             $user->email = $request->email;

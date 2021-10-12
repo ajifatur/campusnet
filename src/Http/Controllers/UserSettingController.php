@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Ajifatur\Campusnet\Helpers\Date;
 use Ajifatur\Campusnet\Models\User;
 
 class UserSettingController extends \App\Http\Controllers\Controller
@@ -46,7 +47,7 @@ class UserSettingController extends \App\Http\Controllers\Controller
             // Update the user profile
             $user = User::find(Auth::user()->id);
             $user->name = $request->name;
-            $user->birthdate = generate_date_format($request->birthdate, 'y-m-d');
+            $user->birthdate = Date::change($request->birthdate);
             $user->gender = $request->gender;
             $user->phone_number = $request->phone_number;
             $user->save();

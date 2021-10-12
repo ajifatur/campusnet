@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Ajifatur\Campusnet\Helpers\Date;
 use Ajifatur\Campusnet\Models\Course;
 use Ajifatur\Campusnet\Models\Topic;
 use Ajifatur\Campusnet\Models\Material;
@@ -88,25 +89,15 @@ class MaterialController extends \App\Http\Controllers\Controller
 
             // If the content type is assignment
             if($request->type_code == 'assignment') {
-                // Split time
-                $start_at = null; $end_at = null;
-                $content_time = explode(' - ', $request->content['time']);
-                if(count($content_time) == 2) {
-                    // Start time
-                    $start_time = explode(' ', $content_time[0]);
-                    $start_at = count($start_time) == 2 ? format_date($start_time[0], 'y-m-d').' '.$start_time[1].':00' : null;
+                // Split date
+                $date = Date::split($request->content['time']);
 
-                    // End time
-                    $end_time = explode(' ', $content_time[1]);
-                    $end_at = count($end_time) == 2 ? format_date($end_time[0], 'y-m-d').' '.$end_time[1].':00' : null;
-                }
-                
                 // Save the assignment
                 $assignment = new Assignment;
                 $assignment->name = $request->content['name'];
                 $assignment->description = $request->content['description'];
-                $assignment->start_at = $start_at;
-                $assignment->end_at = $end_at;
+                $assignment->start_at = array_key_exists(0, $date) ? $date[0] : null;
+                $assignment->end_at = array_key_exists(1, $date) ? $date[1] : null;
                 $assignment->save();
 
                 // Get the assignment id
@@ -202,25 +193,15 @@ class MaterialController extends \App\Http\Controllers\Controller
         else{
             // If the content type is assignment
             if($request->type_code == 'assignment') {
-                // Split time
-                $start_at = null; $end_at = null;
-                $content_time = explode(' - ', $request->content['time']);
-                if(count($content_time) == 2) {
-                    // Start time
-                    $start_time = explode(' ', $content_time[0]);
-                    $start_at = count($start_time) == 2 ? format_date($start_time[0], 'y-m-d').' '.$start_time[1].':00' : null;
-
-                    // End time
-                    $end_time = explode(' ', $content_time[1]);
-                    $end_at = count($end_time) == 2 ? format_date($end_time[0], 'y-m-d').' '.$end_time[1].':00' : null;
-                }
+                // Split date
+                $date = Date::split($request->content['time']);
                 
                 // Update the assignment
                 $assignment = Assignment::find($request->content['id']);
                 $assignment->name = $request->content['name'];
                 $assignment->description = $request->content['description'];
-                $assignment->start_at = $start_at;
-                $assignment->end_at = $end_at;
+                $assignment->start_at = array_key_exists(0, $date) ? $date[0] : null;
+                $assignment->end_at = array_key_exists(1, $date) ? $date[1] : null;
                 $assignment->save();
 
                 // Get the assignment id
