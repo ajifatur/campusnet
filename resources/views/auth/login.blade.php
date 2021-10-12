@@ -30,7 +30,7 @@
             <div class="alert alert-danger" role="alert">The provided credentials do not match our records!</div>
             @endif
             <div class="form-floating">
-                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Email / Username">
+                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Email / Username" value="{{ old('username') }}" autofocus>
                 <label for="floatingInput">Email / Username</label>
             </div>
             <div class="form-floating">

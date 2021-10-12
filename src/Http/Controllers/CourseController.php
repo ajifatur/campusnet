@@ -21,6 +21,9 @@ class CourseController extends \App\Http\Controllers\Controller
      */
     public function index(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get courses
         $courses = Course::all();
 
@@ -37,6 +40,9 @@ class CourseController extends \App\Http\Controllers\Controller
      */
     public function create()
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get categories
         $categories = Category::all();
 
@@ -100,6 +106,9 @@ class CourseController extends \App\Http\Controllers\Controller
      */
     public function detail($id)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        
         // Get the course
         $course = Course::findOrFail($id);
 
@@ -117,6 +126,9 @@ class CourseController extends \App\Http\Controllers\Controller
      */
     public function edit($id)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get the course
         $course = Course::findOrFail($id);
 
@@ -182,6 +194,9 @@ class CourseController extends \App\Http\Controllers\Controller
      */
     public function delete(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get the course
         $course = Course::find($request->id);
 

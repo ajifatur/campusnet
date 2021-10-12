@@ -19,6 +19,9 @@ class TopicController extends \App\Http\Controllers\Controller
      */
     public function create($course_id)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get the course
         $course = Course::findOrFail($course_id);
 
@@ -73,6 +76,9 @@ class TopicController extends \App\Http\Controllers\Controller
      */
     public function edit($course_id, $topic_id)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get the course
         $course = Course::findOrFail($course_id);
 
@@ -125,6 +131,9 @@ class TopicController extends \App\Http\Controllers\Controller
      */
     public function delete(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        
         // Get the topic
         $topic = Topic::find($request->id);
 

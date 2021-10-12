@@ -17,6 +17,9 @@ class CategoryController extends \App\Http\Controllers\Controller
      */
     public function index(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get categories
         $categories = Category::all();
 
@@ -33,6 +36,9 @@ class CategoryController extends \App\Http\Controllers\Controller
      */
     public function create()
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // View
         return view('campusnet::admin/category/create');
     }
@@ -85,6 +91,9 @@ class CategoryController extends \App\Http\Controllers\Controller
      */
     public function edit($id)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
         // Get the category
         $category = Category::findOrFail($id);
 
@@ -142,6 +151,9 @@ class CategoryController extends \App\Http\Controllers\Controller
      */
     public function delete(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        
         // Get the category
         $category = Category::find($request->id);
 
