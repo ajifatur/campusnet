@@ -40,7 +40,7 @@ class MediaController extends \App\Http\Controllers\Controller
         }
         else {
             // Get media
-            $media = Media::all();
+            $media = Media::orderBy('name','asc')->get();
 
             // View
             return view('campusnet::admin/media/index', [

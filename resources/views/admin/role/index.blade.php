@@ -19,6 +19,7 @@
                     <table class="table table-hover table-bordered" id="datatable">
                         <thead class="bg-light">
                             <tr>
+                                <th width="30"><input type="checkbox" class="form-check-input"></th>
                                 <th>Nama</th>
                                 <th>Kode</th>
                                 <th width="60">Opsi</th>
@@ -27,6 +28,7 @@
                         <tbody>
                             @foreach($roles as $role)
                             <tr>
+                                <td align="center"><input type="checkbox" class="form-check-input"></td>
                                 <td>{{ $role->name }}</td>
                                 <td>{{ $role->code }}</td>
                                 <td>
@@ -54,11 +56,11 @@
 
 @section('js')
 
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+@include('campusnet::layouts/js/datatable')
+
 <script type="text/javascript">
     // DataTable
-    $("#datatable").DataTable();
+    DataTable("#datatable");
 
     // Button Delete
     $(document).on("click", ".btn-delete", function(e) {

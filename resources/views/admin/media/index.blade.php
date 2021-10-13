@@ -19,6 +19,7 @@
                     <table class="table table-hover table-bordered" id="datatable">
                         <thead class="bg-light">
                             <tr>
+                                <th width="30"><input type="checkbox" class="form-check-input"></th>
                                 <th>Nama</th>
                                 <th width="150">Pengunggah</th>
                                 <th width="60">Opsi</th>
@@ -27,9 +28,10 @@
                         <tbody>
                             @foreach($media as $file)
                             <tr>
+                                <td align="center"><input type="checkbox" class="form-check-input"></td>
                                 <td><a href="{{ asset('assets/media/'.$file->name) }}" target="_blank">{{ $file->name }}</a></td>
                                 <td>{{ $file->user->name }}</td>
-                                <td>
+                                <td align="center">
                                     <div class="btn-group">
                                         <a href="{{ route('admin.media.edit', ['id' => $file->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
                                         <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $file->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
@@ -54,11 +56,11 @@
 
 @section('js')
 
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+@include('campusnet::layouts/js/datatable')
+
 <script type="text/javascript">
     // DataTable
-    $("#datatable").DataTable();
+    DataTable("#datatable");
 
     // Button Delete
     $(document).on("click", ".btn-delete", function(e) {
