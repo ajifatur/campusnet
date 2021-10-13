@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Ajifatur\Campusnet\Models\Media;
+use Ajifatur\Campusnet\Models\User;
 
 class MediaController extends \App\Http\Controllers\Controller
 {
@@ -19,8 +20,14 @@ class MediaController extends \App\Http\Controllers\Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
+            // Get the user
+            $user = User::find($request->query('user_id'));
+
             // Get media
-            $media = Media::where('user_id','=',$request->query('user_id'))->orderBy('name','asc')->get();
+            if(Auth::user()->role_id == role('instructor'))
+                $media = Media::where('user_id','=',$user->id)->orderBy('name','asc')->get();
+            else
+                $media = Media::orderBy('name','asc')->get();
 
             // Get files in the directory
             $files = [];
@@ -39,8 +46,14 @@ class MediaController extends \App\Http\Controllers\Controller
             return response()->json($files, 200);
         }
         else {
+            // Check the access
+            has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
             // Get media
-            $media = Media::orderBy('name','asc')->get();
+            if(Auth::user()->role_id == role('instructor'))
+                $media = Media::where('user_id','=',Auth::user()->id)->orderBy('name','asc')->get();
+            else
+                $media = Media::orderBy('name','asc')->get();
 
             // View
             return view('campusnet::admin/media/index', [
@@ -57,6 +70,9 @@ class MediaController extends \App\Http\Controllers\Controller
      */
     public function delete(Request $request)
     {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        
         // Get the media
         $media = Media::find($request->id);
 

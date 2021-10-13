@@ -19,9 +19,11 @@
                     <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.user.index'))) || is_int(strpos(Request::url(), route('admin.role.index'))) || is_int(strpos(Request::url(), route('admin.permission.index'))) ? 'active' : '' }}" href="{{ route('admin.user.index') }}">Pengguna</a>
                 </li>
                 @endif
+                @if(has_access('MediaController::index', Auth::user()->role_id, false))
                 <li class="nav-item">
                     <a class="nav-link {{ is_int(strpos(Request::url(), route('admin.media.index'))) ? 'active' : '' }}" href="{{ route('admin.media.index') }}">Media</a>
                 </li>
+                @endif
             </ul>
             @if(Auth::check())
             <div class="navbar-nav">

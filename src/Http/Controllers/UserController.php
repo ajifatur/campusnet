@@ -164,7 +164,7 @@ class UserController extends \App\Http\Controllers\Controller
             $user->phone_number = $request->phone_number;
             $user->email = $request->email;
             $user->username = $request->username;
-            $user->password = bcrypt($request->password);
+            $user->password = $request->password != '' ? bcrypt($request->password) : $user->password;
             $user->status = $request->status;
             $user->save();
 

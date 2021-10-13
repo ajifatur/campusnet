@@ -25,7 +25,10 @@ class CourseController extends \App\Http\Controllers\Controller
         has_access(generate_method(__METHOD__), Auth::user()->role_id);
 
         // Get courses
-        $courses = Course::all();
+        if(Auth::user()->role_id == role('instructor'))
+            $courses = Course::where('user_id','=',Auth::user()->id)->get();
+        else
+            $courses = Course::all();
 
         // View
         return view('campusnet::admin/course/index', [
@@ -110,7 +113,10 @@ class CourseController extends \App\Http\Controllers\Controller
         has_access(generate_method(__METHOD__), Auth::user()->role_id);
         
         // Get the course
-        $course = Course::findOrFail($id);
+        if(Auth::user()->role_id == role('instructor'))
+            $course = Course::where('user_id','=',Auth::user()->id)->findOrFail($id);
+        else
+            $course = Course::findOrFail($id);
 
         // View
         return view('campusnet::admin/course/detail', [
@@ -130,7 +136,10 @@ class CourseController extends \App\Http\Controllers\Controller
         has_access(generate_method(__METHOD__), Auth::user()->role_id);
 
         // Get the course
-        $course = Course::findOrFail($id);
+        if(Auth::user()->role_id == role('instructor'))
+            $course = Course::where('user_id','=',Auth::user()->id)->findOrFail($id);
+        else
+            $course = Course::findOrFail($id);
 
         // Get categories
         $categories = Category::all();
