@@ -11,6 +11,7 @@ use Ajifatur\Campusnet\Models\Course;
 use Ajifatur\Campusnet\Models\Topic;
 use Ajifatur\Campusnet\Models\Material;
 use Ajifatur\Campusnet\Models\Type;
+use Ajifatur\Campusnet\Models\Media;
 use Ajifatur\Campusnet\Models\Assignment;
 
 class MaterialController extends \App\Http\Controllers\Controller
@@ -119,7 +120,46 @@ class MaterialController extends \App\Http\Controllers\Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified resource.
+     *
+     * @param  int  $course_id
+     * @param  int  $topic_id
+     * @param  int  $material_id
+     * @return \Illuminate\Http\Response
+     */
+    public function detail($course_id, $topic_id, $material_id)
+    {
+        // Check the access
+        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+
+        // Get the course
+        $course = Course::findOrFail($course_id);
+
+        // Get the topic
+        $topic = Topic::where('course_id','=',$course_id)->findOrFail($topic_id);
+
+        // Get the material
+        $material = Material::where('topic_id','=',$topic_id)->findOrFail($material_id);
+
+        // Get the content
+        if($material->type->code == 'uploaded-video' || $material->type->code == 'file')
+            $content = Media::find($material->content);
+        elseif($material->type->code == 'assignment')
+            $content = Assignment::find($material->content);
+        else
+            $content = null;
+
+        // View
+        return view('campusnet::admin/material/detail', [
+            'course' => $course,
+            'topic' => $topic,
+            'material' => $material,
+            'content' => $content,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
      *
      * @param  int  $course_id
      * @param  int  $topic_id
@@ -140,15 +180,20 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Get the material
         $material = Material::where('topic_id','=',$topic_id)->findOrFail($material_id);
 
-        // Get the assignment
-        $assignment = Assignment::find($material->content);
+        // Get the content
+        if($material->type->code == 'uploaded-video' || $material->type->code == 'file')
+            $content = Media::find($material->content);
+        elseif($material->type->code == 'assignment')
+            $content = Assignment::find($material->content);
+        else
+            $content = null;
 
         // View
         return view('campusnet::admin/material/edit', [
             'course' => $course,
             'topic' => $topic,
             'material' => $material,
-            'assignment' => $assignment,
+            'content' => $content,
         ]);
     }
 

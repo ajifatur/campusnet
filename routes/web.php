@@ -51,7 +51,8 @@ Route::group(['middleware' => ['campusnet.user']], function() {
     // Material
     Route::get('/admin/course/material/create/{course_id}/{topic_id}', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@create')->name('admin.material.create');
     Route::post('/admin/material/store', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@store')->name('admin.material.store');
-    Route::get('/admin/course/material/create/{course_id}/{topic_id}/{material_id}', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@edit')->name('admin.material.edit');
+    Route::get('/admin/course/material/detail/{course_id}/{topic_id}/{material_id}', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@detail')->name('admin.material.detail');
+    Route::get('/admin/course/material/edit/{course_id}/{topic_id}/{material_id}', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@edit')->name('admin.material.edit');
     Route::post('/admin/material/update', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@update')->name('admin.material.update');
     Route::post('/admin/material/delete', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@delete')->name('admin.material.delete');
     Route::post('/admin/material/sort', '\Ajifatur\Campusnet\Http\Controllers\MaterialController@sort')->name('admin.material.sort');

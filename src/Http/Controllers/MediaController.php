@@ -19,14 +19,19 @@ class MediaController extends \App\Http\Controllers\Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
+            // Get media
+            $media = Media::orderBy('name','asc')->get();
+
             // Get files in the directory
             $files = [];
-            foreach(File::allFiles(public_path('assets/media')) as $file) {
-                if($request->query('type') == 'file')
-                    array_push($files, $file->getRelativePathname());
-                elseif($request->query('type') == 'uploaded-video') {
-                    $file_info = file_info($file->getRelativePathname());
-                    if(in_array($file_info['extension'], ['mp4', 'mkv', 'mov', 'avi', 'flv', 'mpg', 'mpeg'])) array_push($files, $file->getRelativePathname());
+            foreach($media as $file) {
+                if(File::exists(public_path('assets/media/'.$file->name))) {
+                    if($request->query('type') == 'file')
+                        array_push($files, ['id' => $file->id, 'name' => $file->name]);
+                    elseif($request->query('type') == 'uploaded-video') {
+                        $file_info = file_info($file->name);
+                        if(in_array($file_info['extension'], ['mp4', 'mkv', 'mov', 'avi', 'flv', 'mpg', 'mpeg'])) array_push($files, ['id' => $file->id, 'name' => $file->name]);
+                    }
                 }
             }
 
@@ -56,6 +61,7 @@ class MediaController extends \App\Http\Controllers\Controller
         $media = Media::find($request->id);
 
         // Delete the media
+        File::delete(public_path('assets/media/'.$media->name));
         $media->delete();
 
         // Redirect
@@ -71,10 +77,7 @@ class MediaController extends \App\Http\Controllers\Controller
     public function upload(Request $request)
     {
         // Get files in the directory
-        $files = [];
-        foreach(File::allFiles(public_path('assets/media')) as $file) {
-            array_push($files, $file->getRelativePathname());
-        }
+        $files = Media::pluck('name')->toArray();
 
         // Check the file in the directory
         $file_name = $_FILES['content']['name'];
@@ -89,9 +92,16 @@ class MediaController extends \App\Http\Controllers\Controller
         // Upload file
         move_uploaded_file($_FILES['content']['tmp_name'], public_path('assets/media/'.$file_name));
 
+        // Save the file
+        $file = new Media;
+        $file->user_id = $_POST['user_id'];
+        $file->name = $file_name;
+        $file->save();
+
         // Return
         return response()->json([
-            'filename' => $file_name
+            'filename' => $file_name,
+            'id' => $file->id
         ]);
     }
 }

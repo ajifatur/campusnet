@@ -42,10 +42,10 @@
                             <div class="row mb-3">
                                 <label class="col-lg-2 col-md-3 col-form-label">File Video <span class="text-danger">*</span></label>
                                 <div class="col-lg-10 col-md-9">
-                                    <input type="hidden" name="content" value="{{ $material->content }}">
+                                    <input type="hidden" name="content" value="{{ $content ? $content->id : '' }}">
                                     <input type="file" name="content" class="d-none" id="uploaded-video-file" accept="video/*">
                                     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-file"><i class="bi-files me-1"></i> Upload/Pilih File</button>
-                                    <div class="file-title mt-1"><i class="bi-camera-video me-1"></i> <span>{{ $material->content }}</span></div>
+                                    <div class="file-title mt-1"><i class="bi-camera-video me-1"></i> <span>{{ $content ? $content->name : '' }}</span></div>
                                     @if($errors->has('content'))
                                     <div class="small text-danger">{{ $errors->first('content') }}</div>
                                     @endif
@@ -67,10 +67,10 @@
                             <div class="row mb-3">
                                 <label class="col-lg-2 col-md-3 col-form-label">File <span class="text-danger">*</span></label>
                                 <div class="col-lg-10 col-md-9">
-                                    <input type="hidden" name="content" value="{{ $material->content }}">
+                                    <input type="hidden" name="content" value="{{ $content ? $content->id : '' }}">
                                     <input type="file" name="content" class="d-none" id="uploaded-file">
                                     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-file"><i class="bi-files me-1"></i> Upload/Pilih File</button>
-                                    <div class="file-title mt-1"><i class="bi-file-check me-1"></i> <span>{{ $material->content }}</span></div>
+                                    <div class="file-title mt-1"><i class="bi-file-check me-1"></i> <span>{{ $content ? $content->name : '' }}</span></div>
                                     @if($errors->has('content'))
                                     <div class="small text-danger">{{ $errors->first('content') }}</div>
                                     @endif
@@ -80,11 +80,11 @@
                             <!-- Content: Assignment -->
                             <div class="row">
                                 <div class="col-12">
-                                    <input type="hidden" name="content[id]" value="{{ $assignment ? $assignment->id : '' }}">
+                                    <input type="hidden" name="content[id]" value="{{ $content ? $content->id : '' }}">
                                     <div class="row mb-3">
                                         <label class="col-lg-2 col-md-3 col-form-label">Judul Tugas <span class="text-danger">*</span></label>
                                         <div class="col-lg-10 col-md-9">
-                                            <input type="text" name="content[name]" class="form-control form-control-sm {{ $errors->has('content.name') ? 'border-danger' : '' }}" value="{{ $assignment ? $assignment->name : '' }}">
+                                            <input type="text" name="content[name]" class="form-control form-control-sm {{ $errors->has('content.name') ? 'border-danger' : '' }}" value="{{ $content ? $content->name : '' }}">
                                             @if($errors->has('content.name'))
                                             <div class="small text-danger">{{ $errors->first('content.name') }}</div>
                                             @endif
@@ -93,7 +93,7 @@
                                     <div class="row mb-3">
                                         <label class="col-lg-2 col-md-3 col-form-label">Deskripsi Tugas <span class="text-danger">*</span></label>
                                         <div class="col-lg-10 col-md-9">
-                                            <textarea name="content[description]" class="form-control form-control-sm {{ $errors->has('content.description') ? 'border-danger' : '' }}" rows="5">{{ $assignment ? $assignment->description : '' }}</textarea>
+                                            <textarea name="content[description]" class="form-control form-control-sm {{ $errors->has('content.description') ? 'border-danger' : '' }}" rows="5">{{ $content ? $content->description : '' }}</textarea>
                                             @if($errors->has('content.description'))
                                             <div class="small text-danger">{{ $errors->first('content.description') }}</div>
                                             @endif
@@ -186,8 +186,8 @@
 
     // Daterangepicker
     DateRangePicker("input[name='content[time]']", {
-        start: "{{ $assignment ? date('d/m/Y H:i', strtotime($assignment->start_at)) : null }}",
-        end: "{{ $assignment ? date('d/m/Y H:i', strtotime($assignment->end_at)) : null }}",
+        start: "{{ $content ? date('d/m/Y H:i', strtotime($content->start_at)) : null }}",
+        end: "{{ $content ? date('d/m/Y H:i', strtotime($content->end_at)) : null }}",
     });
 
     // Show Modal File Event
@@ -214,9 +214,9 @@
                     data: {type: type_code},
                     success: function(files){
                         var html = '';
-                        for(var i=0; i<files.length; i++) {
-                            html += '<a href="#" class="list-group-item list-group-item-action btn-choose-file" data-file="' + files[i] + '">' + files[i] + '</a>';
-                        }
+                        $(files).each(function(key,file) {
+                            html += '<a href="#" class="list-group-item list-group-item-action btn-choose-file" data-id="' + file.id + '" data-name="' + file.name + '">' + file.name + '</a>';
+                        });
                         $("#choose .list-group").html(html);
                     }
                 });
@@ -248,9 +248,10 @@
     $(document).on("click", ".btn-choose-file", function(e) {
         // Change value and text
         e.preventDefault();
-        var filename = $(this).data("file");
-        $("input[type=hidden][name=content]").val(filename);
-        $(".file-title span").text(filename);
+        var id = $(this).data("id");
+        var name = $(this).data("name");
+        $("input[type=hidden][name=content]").val(id);
+        $(".file-title span").text(name);
         $(".file-title").removeClass("d-none");
 
         // Hide modal
@@ -273,14 +274,14 @@
         else if(type_code === "uploaded-video") {
             var file_content = document.getElementById("uploaded-video-file").files[0];
             if(name !== "" && content !== "" && file_content !== undefined) {
-                formProgress({content: file_content});
+                formProgress({content: file_content, user_id: "{{ Auth::user()->id }}"});
                 return;
             }
         }
         else if(type_code === "file") {
             var file_content = document.getElementById("uploaded-file").files[0];
             if(name !== "" && content !== "" && file_content !== undefined) {
-                formProgress({content: file_content});
+                formProgress({content: file_content, user_id: "{{ Auth::user()->id }}"});
                 return;
             }
         }
@@ -296,6 +297,7 @@
         // Form
         var form = new FormData();
         form.append("content", data.content);
+        form.append("user_id", data.user_id);
 
         // Upload via AJAX
         var ajax = new XMLHttpRequest();
@@ -303,7 +305,7 @@
         ajax.onreadystatechange = function() {
             if(this.readyState == 4 && this.status == 200) {
                 var result = JSON.parse(this.responseText);
-                $("input[type=hidden][name=content]").val(result.filename);
+                $("input[type=hidden][name=content]").val(result.id);
                 $("input[type=file]").attr("disabled","disabled").val(null);
                 $("form").submit();
             }

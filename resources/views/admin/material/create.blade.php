@@ -218,9 +218,9 @@
                     data: {type: type_code},
                     success: function(files){
                         var html = '';
-                        for(var i=0; i<files.length; i++) {
-                            html += '<a href="#" class="list-group-item list-group-item-action btn-choose-file" data-file="' + files[i] + '">' + files[i] + '</a>';
-                        }
+                        $(files).each(function(key,file) {
+                            html += '<a href="#" class="list-group-item list-group-item-action btn-choose-file" data-id="' + file.id + '" data-name="' + file.name + '">' + file.name + '</a>';
+                        });
                         $("#choose .list-group").html(html);
                     }
                 });
@@ -278,9 +278,10 @@
         // Change value and text
         e.preventDefault();
         var type_code = $("input[name=type_code]").val();
-        var filename = $(this).data("file");
-        $(".row[data-code="+type_code+"]").find("input[type=hidden][name=content]").val(filename);
-        $(".row[data-code="+type_code+"]").find(".file-title span").text(filename);
+        var id = $(this).data("id");
+        var name = $(this).data("name");
+        $(".row[data-code="+type_code+"]").find("input[type=hidden][name=content]").val(id);
+        $(".row[data-code="+type_code+"]").find(".file-title span").text(name);
         $(".row[data-code="+type_code+"]").find(".file-title").removeClass("d-none");
 
         // Hide modal
@@ -303,14 +304,14 @@
         else if(type_code === "uploaded-video") {
             var file_content = document.getElementById("uploaded-video-file").files[0];
             if(name !== "" && content !== "" && file_content !== undefined) {
-                formProgress({content: file_content});
+                formProgress({content: file_content, user_id: "{{ Auth::user()->id }}"});
                 return;
             }
         }
         else if(type_code === "file") {
             var file_content = document.getElementById("uploaded-file").files[0];
             if(name !== "" && content !== "" && file_content !== undefined) {
-                formProgress({content: file_content});
+                formProgress({content: file_content, user_id: "{{ Auth::user()->id }}"});
                 return;
             }
         }
@@ -326,6 +327,7 @@
         // Form
         var form = new FormData();
         form.append("content", data.content);
+        form.append("user_id", data.user_id);
 
         // Upload via AJAX
         var ajax = new XMLHttpRequest();
@@ -333,7 +335,7 @@
         ajax.onreadystatechange = function() {
             if(this.readyState == 4 && this.status == 200) {
                 var result = JSON.parse(this.responseText);
-                $("input[type=hidden][name=content]").val(result.filename);
+                $("input[type=hidden][name=content]").val(result.id);
                 $("input[type=file]").attr("disabled","disabled").val(null);
                 $("form").submit();
             }

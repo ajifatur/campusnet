@@ -51,7 +51,7 @@
                                                 <div class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $material->id }}">
                                                     <div>
                                                         <i class="{{ $material->type->icon }} me-1" data-bs-toggle="tooltip" title="{{ $material->type->name }}"></i>
-                                                        <a href="#">{{ $material->name }}</a>
+                                                        <a href="{{ route('admin.material.detail', ['course_id' => $course->id, 'topic_id' => $topic->id, 'material_id' => $material->id]) }}">{{ $material->name }}</a>
                                                     </div>
                                                     <div class="btn-group">
                                                         <a href="{{ route('admin.material.edit', ['course_id' => $course->id, 'topic_id' => $topic->id, 'material_id' => $material->id]) }}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Edit Materi"><i class="bi-pencil"></i></a>
