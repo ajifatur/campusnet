@@ -65,9 +65,24 @@
                         </div>
                         <!-- Content: Video (YouTube) -->
                         <div class="row mb-3 {{ old('type_code') == 'youtube-video' ? '' : 'd-none' }}" data-code="youtube-video">
-                            <label class="col-lg-2 col-md-3 col-form-label">URL YouTube <span class="text-danger">*</span></label>
+                            <label class="col-lg-2 col-md-3 col-form-label">ID YouTube <span class="text-danger">*</span></label>
                             <div class="col-lg-10 col-md-9">
-                                <input type="text" name="content" class="form-control form-control-sm {{ $errors->has('content') && old('type_code') == 'youtube-video' ? 'border-danger' : '' }}" value="{{ old('type_code') == 'youtube-video' ? old('content') : '' }}" data-code="youtube-video">
+                                <input type="text" name="content" class="form-control form-control-sm {{ $errors->has('content') && old('type_code') == 'youtube-video' ? 'border-danger' : '' }}" value="{{ old('type_code') == 'youtube-video' ? old('content') : '' }}" data-code="youtube-video" id="youtube-id">
+                                <div class="youtube-media mt-2">
+                                    <input type="hidden" name="youtube[title]">
+                                    <input type="hidden" name="youtube[author]">
+                                    <input type="hidden" name="youtube[thumbnail]">
+                                    <div class="message d-none"><i class="bi-youtube me-1"></i> <span class="text-danger">Video YouTube tidak ditemukan.</span></div>
+                                    <div class="d-flex d-none">
+                                        <div class="flex-shrink-0">
+                                            <img src="" class="img-thumbnail">
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <p class="mb-0 title"></p>
+                                            <p class="mb-0 small author"></p>
+                                        </div>
+                                    </div>
+                                </div>
                                 @if($errors->has('content') && old('type_code') == 'youtube-video')
                                 <div class="small text-danger">{{ $errors->first('content') }}</div>
                                 @endif
@@ -287,6 +302,39 @@
         // Hide modal
         var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("modal-file"));
         modal.hide();
+    });
+
+    // Change YouTube ID
+    $(document).on("keyup", "#youtube-id", function() {
+        var id = $(this).val();
+        if(id != '') {
+            $.ajax({
+                type: "get",
+                url: "https://www.googleapis.com/youtube/v3/videos",
+                data: {id: id, key: "{{ env('YOUTUBE_API_KEY') }}", part: "snippet"},
+                success: function(response) {
+                    var items = response.items;
+                    if(items.length > 0) {
+                        $(".youtube-media").find(".message").addClass("d-none");
+                        $(".youtube-media").find(".d-flex").removeClass("d-none");
+                        $(".youtube-media").find("img").attr("src",items[0].snippet.thumbnails.default.url);
+                        $(".youtube-media").find(".title").text(items[0].snippet.title);
+                        $(".youtube-media").find(".author").text(items[0].snippet.channelTitle);
+                        $(".youtube-media").find("input[name='youtube[title]']").val(items[0].snippet.title);
+                        $(".youtube-media").find("input[name='youtube[author]']").val(items[0].snippet.channelTitle);
+                        $(".youtube-media").find("input[name='youtube[thumbnail]']").val(items[0].snippet.thumbnails.default.url);
+                    }
+                    else {
+                        $(".youtube-media").find(".message").removeClass("d-none");
+                        $(".youtube-media").find(".d-flex").addClass("d-none");
+                        $(".youtube-media").find("input[name='youtube[title]']").val(null);
+                        $(".youtube-media").find("input[name='youtube[author]']").val(null);
+                        $(".youtube-media").find("input[name='youtube[thumbnail]']").val(null);
+                        $("#youtube-id").val(null);
+                    }
+                }
+            });
+        }
     });
 
     // Button Submit

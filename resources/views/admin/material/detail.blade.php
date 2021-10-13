@@ -21,6 +21,10 @@
 
                 @if($material->type->code == 'text')
                     <div class="ql-snow">{!! html_entity_decode($material->content) !!}</div>
+                @elseif($material->type->code == 'youtube-video')
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/{{ $content ? $content->name : '' }}?rel=0" allowfullscreen></iframe>
+                    </div>
                 @elseif($material->type->code == 'assignment')
                     <p><strong>Nama:</strong><br>{{ $content ? $content->name : '-' }}</p>
                     <p><strong>Deskripsi:</strong><br>{{ $content ? $content->description : '-' }}</p>

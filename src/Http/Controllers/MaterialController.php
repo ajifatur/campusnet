@@ -12,6 +12,7 @@ use Ajifatur\Campusnet\Models\Topic;
 use Ajifatur\Campusnet\Models\Material;
 use Ajifatur\Campusnet\Models\Type;
 use Ajifatur\Campusnet\Models\Media;
+use Ajifatur\Campusnet\Models\YouTube;
 use Ajifatur\Campusnet\Models\Assignment;
 
 class MaterialController extends \App\Http\Controllers\Controller
@@ -62,7 +63,6 @@ class MaterialController extends \App\Http\Controllers\Controller
             $content = $request->content;
         elseif($request->type_code == 'youtube-video'):
             $content_validator = ['content' => 'required'];
-            $content = $request->content;
         elseif($request->type_code == 'file'):
             $content_validator = ['content' => 'required'];
             $content = $request->content;
@@ -88,13 +88,27 @@ class MaterialController extends \App\Http\Controllers\Controller
             // Get the latest material
             $latest_material = Material::where('topic_id','=',$request->topic_id)->orderBy('num_order','desc')->first();
 
+            // If the content type is YouTube video
+            if($request->type_code == 'youtube-video') {
+                $youtube = new YouTube;
+                $youtube->user_id = Auth::user()->id;
+                $youtube->name = $request->content;
+                $youtube->title = $request->youtube['title'];
+                $youtube->author = $request->youtube['author'];
+                $youtube->thumbnail = $request->youtube['thumbnail'];
+                $youtube->save();
+
+                // Get the YouTube id
+                $content = $youtube->id;
+            }
             // If the content type is assignment
-            if($request->type_code == 'assignment') {
+            elseif($request->type_code == 'assignment') {
                 // Split date
                 $date = Date::split($request->content['time']);
 
                 // Save the assignment
                 $assignment = new Assignment;
+                $assignment->user_id = Auth::user()->id;
                 $assignment->name = $request->content['name'];
                 $assignment->description = $request->content['description'];
                 $assignment->start_at = array_key_exists(0, $date) ? $date[0] : null;
@@ -144,6 +158,8 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Get the content
         if($material->type->code == 'uploaded-video' || $material->type->code == 'file')
             $content = Media::find($material->content);
+        elseif($material->type->code == 'youtube-video')
+            $content = YouTube::find($material->content);
         elseif($material->type->code == 'assignment')
             $content = Assignment::find($material->content);
         else
@@ -183,6 +199,8 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Get the content
         if($material->type->code == 'uploaded-video' || $material->type->code == 'file')
             $content = Media::find($material->content);
+        elseif($material->type->code == 'youtube-video')
+            $content = YouTube::find($material->content);
         elseif($material->type->code == 'assignment')
             $content = Assignment::find($material->content);
         else
@@ -214,7 +232,6 @@ class MaterialController extends \App\Http\Controllers\Controller
             $content = $request->content;
         elseif($request->type_code == 'youtube-video'):
             $content_validator = ['content' => 'required'];
-            $content = $request->content;
         elseif($request->type_code == 'file'):
             $content_validator = ['content' => 'required'];
             $content = $request->content;
@@ -236,8 +253,21 @@ class MaterialController extends \App\Http\Controllers\Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
         else{
+            // If the content type is YouTube video
+            if($request->type_code == 'youtube-video') {
+                $youtube = YouTube::findOrNew($request->youtube['id']);
+                $youtube->user_id = Auth::user()->id;
+                $youtube->name = $request->content;
+                $youtube->title = $request->youtube['title'];
+                $youtube->author = $request->youtube['author'];
+                $youtube->thumbnail = $request->youtube['thumbnail'];
+                $youtube->save();
+
+                // Get the YouTube id
+                $content = $youtube->id;
+            }
             // If the content type is assignment
-            if($request->type_code == 'assignment') {
+            elseif($request->type_code == 'assignment') {
                 // Split date
                 $date = Date::split($request->content['time']);
                 
