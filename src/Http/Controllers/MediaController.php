@@ -20,7 +20,7 @@ class MediaController extends \App\Http\Controllers\Controller
     {
         if($request->ajax()) {
             // Get media
-            $media = Media::orderBy('name','asc')->get();
+            $media = Media::where('user_id','=',$request->query('user_id'))->orderBy('name','asc')->get();
 
             // Get files in the directory
             $files = [];

@@ -27,7 +27,7 @@
                         <tbody>
                             @foreach($media as $file)
                             <tr>
-                                <td>{{ $file->name }}</td>
+                                <td><a href="{{ asset('assets/media/'.$file->name) }}" target="_blank">{{ $file->name }}</a></td>
                                 <td>{{ $file->user->name }}</td>
                                 <td>
                                     <div class="btn-group">

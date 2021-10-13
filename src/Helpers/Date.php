@@ -3,7 +3,9 @@
 namespace Ajifatur\Campusnet\Helpers;
 
 /**
- * @method static format($date)
+ * @method static change(string $date)
+ * @method static split(string $date)
+ * @method static merge(array $date)
  */
 class Date
 {
@@ -18,12 +20,12 @@ class Date
      */
     public static function change($date)
     {
-        // If the date format is DD-MM-YYYY
+        // If the date format is YYYY-MM-DD
         if(is_int(strpos($date, '-'))) {
             $explode = explode('-', $date);
             return count($explode) == 3 ? $explode[2].'/'.$explode[1].'/'.$explode[0] : null;
         }
-        // If the date format is YYYY/MM/DD
+        // If the date format is DD/MM/YYYY
         elseif(is_int(strpos($date, '/'))){
             $explode = explode('/', $date);
             return count($explode) == 3 ? $explode[2].'-'.$explode[1].'-'.$explode[0] : null;
@@ -67,7 +69,7 @@ class Date
     {
         // Validate date format
         if(count(array_filter($date)) == 2) {
-            return date('d/m/Y H:i', strtotime($date[0])).self::DATESEPARATOR.date('d/m/Y H:i', strtotime($date[1]));
+            return date('d/m/Y H:i', strtotime($date[0])) . self::DATESEPARATOR . date('d/m/Y H:i', strtotime($date[1]));
         }
         else return '';
     }

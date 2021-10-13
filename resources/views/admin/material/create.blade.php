@@ -230,7 +230,7 @@
                 $.ajax({
                     type: "get",
                     url: "{{ route('api.media.index') }}",
-                    data: {type: type_code},
+                    data: {type: type_code, user_id: "{{ Auth::user()->id }}"},
                     success: function(files){
                         var html = '';
                         $(files).each(function(key,file) {
