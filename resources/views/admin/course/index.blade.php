@@ -19,7 +19,7 @@
                     <table class="table table-hover table-bordered" id="datatable">
                         <thead class="bg-light">
                             <tr>
-                                <th width="30"><input type="checkbox" class="form-check-input"></th>
+                                <th width="30"><input type="checkbox" class="form-check-input checkbox-all"></th>
                                 <th>Nama</th>
                                 <th width="100">Kategori</th>
                                 <th width="150">Pengajar</th>
@@ -29,7 +29,7 @@
                         <tbody>
                             @foreach($courses as $course)
                             <tr>
-                                <td align="center"><input type="checkbox" class="form-check-input"></td>
+                                <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td><a href="{{ route('admin.course.detail', ['id' => $course->id]) }}">{{ $course->name }}</a></td>
                                 <td>{{ $course->category->name }}</td>
                                 <td>{{ $course->user->name }}</td>
@@ -67,6 +67,10 @@
 
     // Button Delete
     Spandiv.ButtonDelete(".btn-delete", ".form-delete");
+
+    // Checkbox
+    Spandiv.CheckboxOne();
+    Spandiv.CheckboxAll();
 </script>
 
 @endsection

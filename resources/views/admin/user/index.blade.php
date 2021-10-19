@@ -19,7 +19,7 @@
                     <table class="table table-hover table-bordered" id="datatable">
                         <thead class="bg-light">
                             <tr>
-                                <th width="30"><input type="checkbox" class="form-check-input"></th>
+                                <th width="30"><input type="checkbox" class="form-check-input checkbox-all"></th>
                                 <th>Nama</th>
                                 <th width="150">Role</th>
                                 <th width="80">Status</th>
@@ -29,7 +29,7 @@
                         <tbody>
                             @foreach($users as $user)
                             <tr>
-                                <td align="center"><input type="checkbox" class="form-check-input"></td>
+                                <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->role->name }}</td>
                                 <td><span class="badge {{ $user->status == 1 ? 'bg-success' : 'bg-danger' }}">{{ $user->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</span></td>
@@ -69,6 +69,10 @@
 
     // Button Delete
     Spandiv.ButtonDelete(".btn-delete", ".form-delete");
+
+    // Checkbox
+    Spandiv.CheckboxOne();
+    Spandiv.CheckboxAll();
 </script>
 
 @endsection

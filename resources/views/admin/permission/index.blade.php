@@ -67,7 +67,7 @@
 
 <!-- Toast -->
 <div class="toast-container position-fixed top-0 end-0 d-none">
-    <div class="toast align-items-center text-white bg-success border-0" id="toast-sort-success" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast align-items-center text-white bg-success border-0" id="toast-sort" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body"></div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -82,39 +82,24 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript">
     // Button Delete
-    $(document).on("click", ".btn-delete", function(e) {
-        e.preventDefault();
-        var id = $(this).data("id");
-        var ask = confirm("Anda yakin ingin menghapus data ini?");
-        if(ask) {
-            $(".form-delete").find("input[name=id]").val(id);
-            $(".form-delete").submit();
-        }
-    });
+    Spandiv.ButtonDelete(".btn-delete", ".form-delete");
 
     // Sortable Permission
-    $(".sortable-permission").sortable({
-        placeholder: "ui-state-highlight",
-        start: function(event, ui){
-            $(".ui-state-highlight").css("height", $(ui.item).outerHeight());
-        },
-        update: function(event, ui){
-            var items = $(this).find("tr");
-            var ids = [];
-            $(items).each(function(key,elem){
-                ids.push($(elem).data("id"));
-            });
-            $.ajax({
-                type: "post",
-                url: "{{ route('admin.permission.sort') }}",
-                data: {_token: "{{ csrf_token() }}", ids: ids},
-                success: function(response) {
-                    Toast(response);
-                }
-            });
-        }
+    Spandiv.Sortable(".sortable-permission", function(event, ui) {
+        var items = $(this).find(".ui-sortable-handle");
+        var ids = [];
+        $(items).each(function(key,elem) {
+            ids.push($(elem).data("id"));
+        });
+        $.ajax({
+            type: "post",
+            url: "{{ route('admin.permission.sort') }}",
+            data: {_token: "{{ csrf_token() }}", ids: ids},
+            success: function(response) {
+                Spandiv.Toast("#toast-sort", response);
+            }
+        });
     });
-    $(".sortable-permission").disableSelection();
     
     // Change Status
     $(document).on("change", ".form-check-input", function(e){
@@ -126,18 +111,10 @@
             url: "{{ route('admin.permission.change') }}",
             data: {_token: "{{ csrf_token() }}", permission: permission, role: role},
             success: function(response){
-                Toast(response);
+                Spandiv.Toast("#toast-sort", response);
             }
         });
     });
-</script>
-<script type="text/javascript">
-    let Toast = (message) => {
-        $(".toast-container").removeClass("d-none");
-        $("#toast-sort-success").find(".toast-body").text(message);
-        var toast = new bootstrap.Toast(document.getElementById("toast-sort-success"));
-        toast.show();
-    }
 </script>
 
 @endsection
@@ -145,11 +122,9 @@
 @section('css')
 
 <style type="text/css">
-    .toast-container {margin: var(--bs-gutter-x,.75rem);}
     .table-sm > :not(caption) > * > * {padding: .25rem .5rem;}
     .table tr th {text-align: center;}
     .table tr th, .table tr td {vertical-align: middle;}
-    .sortable-permission tr {cursor: move;}
 </style>
 
 @endsection

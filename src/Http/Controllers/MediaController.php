@@ -24,7 +24,7 @@ class MediaController extends \App\Http\Controllers\Controller
             $user = User::find($request->query('user_id'));
 
             // Get media
-            if(Auth::user()->role_id == role('instructor'))
+            if($user->role_id == role('instructor'))
                 $media = Media::where('user_id','=',$user->id)->orderBy('name','asc')->get();
             else
                 $media = Media::orderBy('name','asc')->get();

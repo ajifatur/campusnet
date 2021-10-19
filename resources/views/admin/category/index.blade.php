@@ -19,7 +19,7 @@
                     <table class="table table-hover table-bordered" id="datatable">
                         <thead class="bg-light">
                             <tr>
-                                <th width="30"><input type="checkbox" class="form-check-input"></th>
+                                <th width="30"><input type="checkbox" class="form-check-input checkbox-all"></th>
                                 <th>Nama</th>
                                 <th>Slug</th>
                                 <th width="60">Opsi</th>
@@ -28,7 +28,7 @@
                         <tbody>
                             @foreach($categories as $category)
                             <tr>
-                                <td align="center"><input type="checkbox" class="form-check-input"></td>
+                                <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td>{{ $category->name }}</td>
                                 <td>{{ $category->slug }}</td>
                                 <td>
@@ -65,6 +65,10 @@
 
     // Button Delete
     Spandiv.ButtonDelete(".btn-delete", ".form-delete");
+
+    // Checkbox
+    Spandiv.CheckboxOne();
+    Spandiv.CheckboxAll();
 </script>
 
 @endsection
