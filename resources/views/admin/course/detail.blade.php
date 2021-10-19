@@ -101,7 +101,7 @@
 
 <!-- Toast -->
 <div class="toast-container position-fixed top-0 end-0 d-none">
-    <div class="toast align-items-center text-white bg-success border-0" id="toast-sort-success" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast align-items-center text-white bg-success border-0" id="toast-sort" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body"></div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -116,93 +116,44 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript">
     // Button Delete Topic
-    $(document).on("click", ".btn-delete-topic", function(e) {
-        e.preventDefault();
-        var id = $(this).data("id");
-        var ask = confirm("Anda yakin ingin menghapus data ini?");
-        if(ask) {
-            $(".form-delete-topic").find("input[name=id]").val(id);
-            $(".form-delete-topic").submit();
-        }
-    });
+    Spandiv.ButtonDelete(".btn-delete-topic", ".form-delete-topic");
 
     // Button Delete Material
-    $(document).on("click", ".btn-delete-material", function(e) {
-        e.preventDefault();
-        var id = $(this).data("id");
-        var ask = confirm("Anda yakin ingin menghapus data ini?");
-        if(ask) {
-            $(".form-delete-material").find("input[name=id]").val(id);
-            $(".form-delete-material").submit();
-        }
-    });
+    Spandiv.ButtonDelete(".btn-delete-material", ".form-delete-material");
 
     // Sortable Topic
-    $(".sortable-topic").sortable({
-        placeholder: "ui-state-highlight",
-        start: function(event, ui){
-            $(".ui-state-highlight").css("height", $(ui.item).outerHeight());
-        },
-        update: function(event, ui){
-            var items = $(this).find(".card");
-            var ids = [];
-            $(items).each(function(key,elem){
-                ids.push($(elem).data("id"));
-            });
-            $.ajax({
-                type: "post",
-                url: "{{ route('admin.topic.sort') }}",
-                data: {_token: "{{ csrf_token() }}", ids: ids},
-                success: function(response) {
-                    Toast(response);
-                }
-            });
-        }
+    Spandiv.Sortable(".sortable-topic", function(event, ui) {
+        var items = $(this).find(".ui-sortable-handle");
+        var ids = [];
+        $(items).each(function(key,elem) {
+            ids.push($(elem).data("id"));
+        });
+        $.ajax({
+            type: "post",
+            url: "{{ route('admin.topic.sort') }}",
+            data: {_token: "{{ csrf_token() }}", ids: ids},
+            success: function(response) {
+                Spandiv.Toast("#toast-sort", response);
+            }
+        });
     });
-    $(".sortable-topic").disableSelection();
 
     // Sortable Material
-    $(".sortable-material").sortable({
-        placeholder: "ui-state-highlight",
-        start: function(event, ui){
-            $(".ui-state-highlight").css("height", $(ui.item).outerHeight());
-        },
-        update: function(event, ui){
-            var items = $(this).find(".list-group-item");
-            var ids = [];
-            $(items).each(function(key,elem){
-                ids.push($(elem).data("id"));
-            });
-            $.ajax({
-                type: "post",
-                url: "{{ route('admin.material.sort') }}",
-                data: {_token: "{{ csrf_token() }}", ids: ids},
-                success: function(response) {
-                    Toast(response);
-                }
-            });
-        }
+    Spandiv.Sortable(".sortable-material", function(event, ui) {
+        var items = $(this).find(".ui-sortable-handle");
+        var ids = [];
+        $(items).each(function(key,elem) {
+            ids.push($(elem).data("id"));
+        });
+        $.ajax({
+            type: "post",
+            url: "{{ route('admin.material.sort') }}",
+            data: {_token: "{{ csrf_token() }}", ids: ids},
+            success: function(response) {
+                Spandiv.Toast("#toast-sort", response);
+            }
+        });
     });
-    $(".sortable-material").disableSelection();
 </script>
-<script type="text/javascript">
-    let Toast = (message) => {
-        $(".toast-container").removeClass("d-none");
-        $("#toast-sort-success").find(".toast-body").text(message);
-        var toast = new bootstrap.Toast(document.getElementById("toast-sort-success"));
-        toast.show();
-    }
-</script>
-
-@endsection
-
-@section('css')
-
-<style type="text/css">
-    .toast-container {margin: var(--bs-gutter-x,.75rem);}
-    .ui-state-highlight {height: 2rem; margin-bottom: 1rem;}
-    .sortable-topic .card {cursor: move;}
-    .sortable-material .list-group-item {cursor: move;}
-</style>
 
 @endsection

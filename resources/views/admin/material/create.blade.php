@@ -199,15 +199,17 @@
 
 @section('js')
 
-@include('campusnet::layouts/js/quill')
-@include('campusnet::layouts/js/daterangepicker')
+<script src="https://campusdigital.id/assets/plugins/quill/quill.min.js"></script>
+<script src="https://cdn.rawgit.com/kensnyder/quill-image-resize-module/3411c9a7/image-resize.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 <script type="text/javascript">
     // Quill Editor
-    QuillEditor("#quill-editor");
+    Spandiv.Quill("#quill-editor");
 
     // Daterangepicker
-    DateRangePicker("input[name='content[time]']");
+    Spandiv.DateRangePicker("input[name='content[time]']");
 
     // Show Modal File Event
     var modalFile = document.getElementById("modal-file");

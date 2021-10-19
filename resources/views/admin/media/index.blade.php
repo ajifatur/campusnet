@@ -56,22 +56,15 @@
 
 @section('js')
 
-@include('campusnet::layouts/js/datatable')
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
 
 <script type="text/javascript">
     // DataTable
-    DataTable("#datatable");
+    Spandiv.DataTable("#datatable");
 
     // Button Delete
-    $(document).on("click", ".btn-delete", function(e) {
-        e.preventDefault();
-        var id = $(this).data("id");
-        var ask = confirm("Anda yakin ingin menghapus data ini?");
-        if(ask) {
-            $(".form-delete").find("input[name=id]").val(id);
-            $(".form-delete").submit();
-        }
-    });
+    Spandiv.ButtonDelete(".btn-delete", ".form-delete");
 </script>
 
 @endsection
