@@ -6,7 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-use Ajifatur\Campusnet\Helpers\Date;
+use Ajifatur\Helpers\DateTime as DateTimeExt;
 use Ajifatur\Campusnet\Models\Course;
 use Ajifatur\Campusnet\Models\Topic;
 use Ajifatur\Campusnet\Models\Material;
@@ -27,7 +27,7 @@ class MaterialController extends \App\Http\Controllers\Controller
     public function create($course_id, $topic_id)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get the course
         $course = Course::findOrFail($course_id);
@@ -57,7 +57,7 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Content
         if($request->type_code == 'text'):
             $content_validator = ['content' => ''];
-            $content = htmlentities(quill_html($request->content, 'assets/images/quill/'));
+            $content = quill($request->content, 'assets/images/quill/');
         elseif($request->type_code == 'uploaded-video'):
             $content_validator = ['content' => 'required'];
             $content = $request->content;
@@ -104,7 +104,7 @@ class MaterialController extends \App\Http\Controllers\Controller
             // If the content type is assignment
             elseif($request->type_code == 'assignment') {
                 // Split date
-                $date = Date::split($request->content['time']);
+                $date = DateTimeExt::split($request->content['time']);
 
                 // Save the assignment
                 $assignment = new Assignment;
@@ -144,7 +144,7 @@ class MaterialController extends \App\Http\Controllers\Controller
     public function detail($course_id, $topic_id, $material_id)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get the course
         $course = Course::findOrFail($course_id);
@@ -185,7 +185,7 @@ class MaterialController extends \App\Http\Controllers\Controller
     public function edit($course_id, $topic_id, $material_id)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get the course
         $course = Course::findOrFail($course_id);
@@ -226,7 +226,7 @@ class MaterialController extends \App\Http\Controllers\Controller
         // Content
         if($request->type_code == 'text'):
             $content_validator = ['content' => ''];
-            $content = htmlentities(quill_html($request->content, 'assets/images/quill/'));
+            $content = quill($request->content, 'assets/images/quill/');
         elseif($request->type_code == 'uploaded-video'):
             $content_validator = ['content' => 'required'];
             $content = $request->content;
@@ -269,7 +269,7 @@ class MaterialController extends \App\Http\Controllers\Controller
             // If the content type is assignment
             elseif($request->type_code == 'assignment') {
                 // Split date
-                $date = Date::split($request->content['time']);
+                $date = DateTimeExt::split($request->content['time']);
                 
                 // Update the assignment
                 $assignment = Assignment::find($request->content['id']);
@@ -303,7 +303,7 @@ class MaterialController extends \App\Http\Controllers\Controller
     public function delete(Request $request)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
         
         // Get the material
         $material = Material::find($request->id);

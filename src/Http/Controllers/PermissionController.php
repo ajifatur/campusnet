@@ -20,7 +20,7 @@ class PermissionController extends \App\Http\Controllers\Controller
     public function index(Request $request)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get permissions
         $permissions = Permission::orderBy('num_order','asc')->get();
@@ -43,7 +43,7 @@ class PermissionController extends \App\Http\Controllers\Controller
     public function create()
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // View
         return view('campusnet::admin/permission/create');
@@ -93,7 +93,7 @@ class PermissionController extends \App\Http\Controllers\Controller
     public function edit($id)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get the permission
         $permission = Permission::findOrFail($id);
@@ -146,7 +146,7 @@ class PermissionController extends \App\Http\Controllers\Controller
     public function delete(Request $request)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
         
         // Get the permission
         $permission = Permission::find($request->id);

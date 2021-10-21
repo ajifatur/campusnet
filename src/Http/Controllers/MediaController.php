@@ -47,7 +47,7 @@ class MediaController extends \App\Http\Controllers\Controller
         }
         else {
             // Check the access
-            has_access(generate_method(__METHOD__), Auth::user()->role_id);
+            has_access(method(__METHOD__), Auth::user()->role_id);
 
             // Get media
             if(Auth::user()->role_id == role('instructor'))
@@ -71,7 +71,7 @@ class MediaController extends \App\Http\Controllers\Controller
     public function delete(Request $request)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
         
         // Get the media
         $media = Media::find($request->id);

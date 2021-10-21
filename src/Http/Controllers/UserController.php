@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Ajifatur\Campusnet\Helpers\Date;
+use Ajifatur\Helpers\DateTime as DateTimeExt;
 use Ajifatur\Campusnet\Models\User;
 use Ajifatur\Campusnet\Models\Role;
 
@@ -22,7 +22,7 @@ class UserController extends \App\Http\Controllers\Controller
     public function index(Request $request)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get users
         $users = User::all();
@@ -41,7 +41,7 @@ class UserController extends \App\Http\Controllers\Controller
     public function create()
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get roles
         $roles = Role::all();
@@ -83,7 +83,7 @@ class UserController extends \App\Http\Controllers\Controller
             $user = new User;
             $user->role_id = $request->role;
             $user->name = $request->name;
-            $user->birthdate = Date::change($request->birthdate);
+            $user->birthdate = DateTimeExt::change($request->birthdate);
             $user->gender = $request->gender;
             $user->phone_number = $request->phone_number;
             $user->email = $request->email;
@@ -109,7 +109,7 @@ class UserController extends \App\Http\Controllers\Controller
     public function edit($id)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get the user
         $user = User::findOrFail($id);
@@ -159,7 +159,7 @@ class UserController extends \App\Http\Controllers\Controller
             $user = User::find($request->id);
             $user->role_id = $request->role;
             $user->name = $request->name;
-            $user->birthdate = Date::change($request->birthdate);
+            $user->birthdate = DateTimeExt::change($request->birthdate);
             $user->gender = $request->gender;
             $user->phone_number = $request->phone_number;
             $user->email = $request->email;
@@ -182,7 +182,7 @@ class UserController extends \App\Http\Controllers\Controller
     public function delete(Request $request)
     {
         // Check the access
-        has_access(generate_method(__METHOD__), Auth::user()->role_id);
+        has_access(method(__METHOD__), Auth::user()->role_id);
         
         // Get the user
         $user = User::find($request->id);
