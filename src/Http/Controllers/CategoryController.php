@@ -62,20 +62,10 @@ class CategoryController extends \App\Http\Controllers\Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
         else{
-            // Check the slug
-            $slugs = Category::pluck('slug')->toArray();
-            $slug = slug($request->name);
-            $i = 1;
-            while(in_array($slug, $slugs)) {
-                // Recreate slug
-                $i++;
-                $slug = slug($request->name).'-'.$i;
-            }
-
             // Save the category
             $category = new Category;
             $category->name = $request->name;
-            $category->slug = $slug;
+            $category->slug = slugify($request->name, Category::pluck('slug')->toArray());
             $category->save();
 
             // Redirect
@@ -122,20 +112,10 @@ class CategoryController extends \App\Http\Controllers\Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
         else{
-            // Check the slug
-            $slugs = Category::where('id','!=',$request->id)->pluck('slug')->toArray();
-            $slug = slug($request->name);
-            $i = 1;
-            while(in_array($slug, $slugs)) {
-                // Recreate slug
-                $i++;
-                $slug = slug($request->name).'-'.$i;
-            }
-
             // Update the category
             $category = Category::find($request->id);
             $category->name = $request->name;
-            $category->slug = $slug;
+            $category->slug = slugify($request->name, Category::where('id','!=',$request->id)->pluck('slug')->toArray());
             $category->save();
 
             // Redirect

@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Ajifatur\Helpers\File as FileExt;
 use Ajifatur\Campusnet\Models\Media;
 use Ajifatur\Campusnet\Models\User;
 
@@ -92,20 +93,10 @@ class MediaController extends \App\Http\Controllers\Controller
      */
     public function upload(Request $request)
     {
-        // Get files in the directory
-        $files = Media::pluck('name')->toArray();
+        // Set the file name
+        $file_name = FileExt::setName($_FILES['content']['name'], Media::pluck('name')->toArray());
 
-        // Check the file in the directory
-        $file_name = $_FILES['content']['name'];
-        $i = 1;
-        while(in_array($file_name, $files)) {
-            // Recreate file name
-            $i++;
-            $file_info = file_info($_FILES['content']['name']);
-            $file_name = $file_info['nameWithoutExtension'].' ('.$i.').'.$file_info['extension'];
-        }
-
-        // Upload file
+        // Upload the file
         move_uploaded_file($_FILES['content']['tmp_name'], public_path('assets/media/'.$file_name));
 
         // Save the file
