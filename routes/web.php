@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function() {
+    var_dump(\Ajifatur\Helpers\File::json('country-code.json'));
+    return;
     return 'Hello world!';
 });
 
