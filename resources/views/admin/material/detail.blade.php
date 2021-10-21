@@ -49,12 +49,6 @@
 
 @endsection
 
-@section('js')
-
-@include('campusnet::layouts/js/quill')
-
-@endsection
-
 @section('css')
 
 <link rel="stylesheet" type="text/css" href="https://campusdigital.id/assets/plugins/quill/quill.snow.css">
