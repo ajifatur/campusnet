@@ -46,4 +46,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
+    /**
+     * Get the socmeds for the user.
+     */
+    public function socmeds()
+    {
+        return $this->hasMany(Socmed::class);
+    }
 }

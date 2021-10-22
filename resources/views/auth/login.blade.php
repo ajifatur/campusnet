@@ -38,6 +38,10 @@
                 <label for="floatingPassword">Password</label>
             </div>
             <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>
+            <div class="btn-group mt-3">
+                <a href="{{ route('auth.login.provider', ['provider' => 'google']) }}" class="btn btn-outline-primary">Google</a>
+                <a href="{{ route('auth.login.provider', ['provider' => 'facebook']) }}" class="btn btn-outline-primary">Facebook</a>
+            </div>
         </form>
     </main>
 </body>

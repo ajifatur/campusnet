@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function() {
-    var_dump(\Ajifatur\Helpers\File::json('country-code.json'));
-    return;
     return 'Hello world!';
 });
 
@@ -24,6 +22,10 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
     // Login
     Route::get('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@show')->name('auth.login');
     Route::post('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@authenticate')->name('auth.post-login');
+
+    // Socialite
+    Route::get('/auth/{provider}', '\Ajifatur\Campusnet\Http\Controllers\LoginController@redirectToProvider')->name('auth.login.provider');
+    Route::get('/auth/{provider}/callback', '\Ajifatur\Campusnet\Http\Controllers\LoginController@handleProviderCallback')->name('auth.login.callback-provider');
 });
 
 Route::group(['middleware' => ['campusnet.user']], function() {
