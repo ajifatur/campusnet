@@ -118,14 +118,14 @@ class LoginController extends \App\Http\Controllers\Controller
 				$data->status = 1;
 				$data->email_verified = 1;
                 $data->save();
-				
-				// Save the socmed
-				$socmed = new Socmed;
-				$socmed->user_id = $data->id;
-				$socmed->provider_id = $user->getId();
-				$socmed->provider_name = $provider;
-				$socmed->save();
             }
+				
+            // Save the socmed
+            $socmed = new Socmed;
+            $socmed->user_id = $data->id;
+            $socmed->provider_id = $user->getId();
+            $socmed->provider_name = $provider;
+            $socmed->save();
 
             return $data;
         }
