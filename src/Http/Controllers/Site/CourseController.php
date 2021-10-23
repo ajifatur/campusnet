@@ -1,0 +1,27 @@
+<?php
+
+namespace Ajifatur\Campusnet\Http\Controllers\Site;
+
+use Auth;
+use Illuminate\Http\Request;
+use Ajifatur\Campusnet\Models\Course;
+
+class CourseController extends \App\Http\Controllers\Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        // Get courses
+        $courses = Course::has('category')->has('user')->paginate(12);
+
+        // View
+        return view('campusnet::site/course/index', [
+            'courses' => $courses
+        ]);
+    }
+}

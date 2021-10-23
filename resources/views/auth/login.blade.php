@@ -21,10 +21,10 @@
                 <div class="col-12 col-lg-6">
                     <form class="login-box" method="post" action="{{ route('auth.post-login') }}">
                         @csrf
-                        <img class="mb-4" src="https://campusnet.id/assets/images/logo/campusnet.webp" alt="" height="57">
-                        <h1 class="h3 mb-3 fw-normal">Welcome Back!</h1>
+                        <a href="/"><img class="mb-4" src="https://campusnet.id/assets/images/logo/campusnet.webp" alt="" height="60"></a>
+                        <h1 class="h3 mb-3 fw-normal">Selamat Datang</h1>
                         @if($errors->any())
-                        <div class="alert alert-danger" role="alert">The provided credentials do not match our records!</div>
+                        <div class="alert alert-danger" role="alert">Masih terdapat beberapa masalah dalam melakukan login.</div>
                         @endif
                         <div class="mb-3">
                             <input type="text" name="username" class="form-control {{ $errors->has('username') ? 'border-danger' : '' }}" value="{{ old('username') }}" placeholder="Email / Username" autofocus>

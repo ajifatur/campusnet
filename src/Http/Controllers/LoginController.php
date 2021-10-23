@@ -49,7 +49,10 @@ class LoginController extends \App\Http\Controllers\Controller
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route('admin.dashboard');
+            if(in_array($request->user()->role_id, [role('admin'), role('manager'), role('instructor')]))
+                return redirect()->route('admin.dashboard');
+            elseif(in_array($request->user()->role_id, [role('learner')]))
+                return redirect('/');
         }
 
         // Return if has errors

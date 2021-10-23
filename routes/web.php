@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function() {
-    return 'Hello world!';
-});
-
 Route::group(['middleware' => ['campusnet.guest']], function() {
+    // Home
+    Route::get('/', '\Ajifatur\Campusnet\Http\Controllers\Site\HomeController@index')->name('site.home');
+
+    // Course
+    Route::get('/course', '\Ajifatur\Campusnet\Http\Controllers\Site\CourseController@index')->name('site.course.index');
+
     // Login
     Route::get('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@show')->name('auth.login');
     Route::post('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@authenticate')->name('auth.post-login');
