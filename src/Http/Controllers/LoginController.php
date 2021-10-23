@@ -4,6 +4,7 @@ namespace Ajifatur\Campusnet\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Ajifatur\Campusnet\Models\User;
 use Ajifatur\Campusnet\Models\Socmed;
@@ -29,17 +30,29 @@ class LoginController extends \App\Http\Controllers\Controller
      */
     public function authenticate(Request $request)
     {
-        $credentials = $request->validate([
-            'username' => ['required'],
-            'password' => ['required'],
+        // Validator
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|min:6',
+            'password' => 'required|string|min:6',
         ]);
 
+        // Check login type
+        $loginType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        // Set credentials
+        $credentials = [
+			$loginType => $request->username,
+			'password' => $request->password
+		];
+
+        // Auth attempt
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
             return redirect()->route('admin.dashboard');
         }
 
+        // Return if has errors
         return back()->withErrors([
             'message' => 'The provided credentials do not match our records.',
         ]);

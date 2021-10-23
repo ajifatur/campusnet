@@ -41,18 +41,14 @@
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
+                            @foreach(gender() as $gender)
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" id="gender-M" value="M" {{ old('gender') == 'M' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="gender-M">
-                                    Laki-Laki
+                                <input class="form-check-input" type="radio" name="gender" id="gender-{{ $gender['key'] }}" value="{{ $gender['key'] }}" {{ old('gender') == $gender['key'] ? 'checked' : '' }}>
+                                <label class="form-check-label" for="gender-{{ $gender['key'] }}">
+                                    {{ $gender['name'] }}
                                 </label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" id="gender-F" value="F" {{ old('gender') == 'F' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="gender-F">
-                                    Perempuan
-                                </label>
-                            </div>
+                            @endforeach
                             @if($errors->has('gender'))
                             <div class="small text-danger">{{ $errors->first('gender') }}</div>
                             @endif
@@ -79,7 +75,7 @@
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Username <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
-                            <input type="text" name="username" class="form-control form-control-sm {{ $errors->has('username') ? 'border-danger' : '' }}" value="{{ old('phone_number') }}">
+                            <input type="text" name="username" class="form-control form-control-sm {{ $errors->has('username') ? 'border-danger' : '' }}" value="{{ old('username') }}">
                             @if($errors->has('username'))
                             <div class="small text-danger">{{ $errors->first('username') }}</div>
                             @endif
@@ -114,18 +110,14 @@
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Status <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
+                            @foreach(status() as $status)
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="status" id="status-1" value="1" {{ old('status') == '1' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="status-1">
-                                    Aktif
+                                <input class="form-check-input" type="radio" name="status" id="status-{{ $status['key'] }}" value="{{ $status['key'] }}" {{ old('status') == $status['key'] ? 'checked' : '' }}>
+                                <label class="form-check-label" for="status-{{ $status['key'] }}">
+                                    {{ $status['name'] }}
                                 </label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="status" id="status-0" value="0" {{ old('status') == '0' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="status-0">
-                                    Tidak Aktif
-                                </label>
-                            </div>
+                            @endforeach
                             @if($errors->has('status'))
                             <div class="small text-danger">{{ $errors->first('status') }}</div>
                             @endif

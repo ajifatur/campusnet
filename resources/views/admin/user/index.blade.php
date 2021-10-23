@@ -32,7 +32,7 @@
                                 <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->role->name }}</td>
-                                <td><span class="badge {{ $user->status == 1 ? 'bg-success' : 'bg-danger' }}">{{ $user->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</span></td>
+                                <td><span class="badge {{ $user->status == 1 ? 'bg-success' : 'bg-danger' }}">{{ status($user->status) }}</span></td>
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.user.edit', ['id' => $user->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>

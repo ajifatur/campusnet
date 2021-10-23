@@ -23,9 +23,11 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
     Route::get('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@show')->name('auth.login');
     Route::post('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@authenticate')->name('auth.post-login');
 
-    // Socialite
-    Route::get('/auth/{provider}', '\Ajifatur\Campusnet\Http\Controllers\LoginController@redirectToProvider')->name('auth.login.provider');
-    Route::get('/auth/{provider}/callback', '\Ajifatur\Campusnet\Http\Controllers\LoginController@handleProviderCallback')->name('auth.login.callback-provider');
+    if(config('campusnet.settings.socialite') == true) {
+        // Socialite
+        Route::get('/auth/{provider}', '\Ajifatur\Campusnet\Http\Controllers\LoginController@redirectToProvider')->name('auth.login.provider');
+        Route::get('/auth/{provider}/callback', '\Ajifatur\Campusnet\Http\Controllers\LoginController@handleProviderCallback')->name('auth.login.callback-provider');
+    }
 });
 
 Route::group(['middleware' => ['campusnet.user']], function() {
