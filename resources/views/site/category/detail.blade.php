@@ -5,7 +5,7 @@
 <div class="row py-5">
     <section class="section-course">
         <div class="container">
-            <h4>Kelas</h4>
+            <h4>Kelas: {{ $category->name }}</h4>
             @if(count($courses) > 0)
                 <div class="row"> 
                     @foreach($courses as $course)

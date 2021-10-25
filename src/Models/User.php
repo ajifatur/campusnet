@@ -48,6 +48,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the courses for the user.
+     */
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    /**
      * Get the socmeds for the user.
      */
     public function socmeds()

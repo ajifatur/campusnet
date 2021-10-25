@@ -43,7 +43,7 @@
                 <div class="card-body">
                     <div class="row">
                         @foreach($categories as $category)
-                        <a href="#" class="col-4 col-md-3 col-lg-2 text-center mb-2 mb-lg-0 transition">
+                        <a href="{{ route('site.category.detail', ['slug' => $category->slug]) }}" class="col-4 col-md-3 col-lg-2 text-center mb-2 mb-lg-0 transition">
                             <div class="card h-100">
                                 <div class="card-body p-2"><i class="bi-box h5"></i><br>{{ $category->name }}</div>
                             </div>
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-transparent text-center">
-                    <a href="#" class="btn btn-theme-1 rounded-3">Semua Kategori</a>
+                    <a href="{{ route('site.category.index') }}" class="btn btn-theme-1 rounded-3">Semua Kategori</a>
                 </div>
             </div>
         </div>
@@ -66,14 +66,14 @@
                 @foreach($courses as $course)
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-3 transition">
                     <div class="card h-100 shadow-sm rounded-2 border-0">
-                        <a href="#">
+                        <a href="{{ route('site.course.detail', ['slug' => $course->slug]) }}">
                             <img class="card-img-top rounded-2 shadow" src="https://demo.campusnet.id/assets/images/kelas/2021-08-30-14-00-02.png" alt="Sampul Gambar">
                         </a>
                         <div class="card-badge">
-                            <span class="badge bg-theme-1"><a class="text-white text-decoration-none" href="#">{{ $course->category->name }}</a></span>
+                            <span class="badge bg-theme-1"><a class="text-white text-decoration-none" href="{{ route('site.category.detail', ['slug' => $course->category->slug]) }}">{{ $course->category->name }}</a></span>
                         </div>
                         <div class="card-body">
-                            <p class="card-title h6 mb-0"><a class="text-dark text-decoration-none" href="#">{{ $course->name }}</a></p>
+                            <p class="card-title h6 mb-0"><a class="text-dark text-decoration-none" href="{{ route('site.course.detail', ['slug' => $course->slug]) }}">{{ $course->name }}</a></p>
                         </div>
                         <div class="card-footer bg-transparent">
                             <p class="small mb-0">Oleh <a class="text-decoration-none" href="#">{{ $course->user->name }}</a></p>
@@ -83,7 +83,7 @@
                 @endforeach
             </div>
             <div class="text-center mt-4">
-                <a class="btn btn-theme-1 rounded-3 px-3 shadow-sm" href="{{ route('site.course.index') }}">Tampilkan Lainnya</a>
+                <a href="{{ route('site.course.index') }}" class="btn btn-theme-1 rounded-3">Tampilkan Lainnya</a>
             </div>
         </div>
     </section>

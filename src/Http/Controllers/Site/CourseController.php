@@ -24,4 +24,21 @@ class CourseController extends \App\Http\Controllers\Controller
             'courses' => $courses
         ]);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Http\Response
+     */
+    public function detail($slug)
+    {
+        // Get the course
+        $course = Course::where('slug','=',$slug)->firstOrFail();
+
+        // View
+        return view('campusnet::site/course/detail', [
+            'course' => $course
+        ]);
+    }
 }

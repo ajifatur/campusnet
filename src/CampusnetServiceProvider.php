@@ -3,6 +3,7 @@
 namespace Ajifatur\Campusnet;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\File;
 
@@ -15,6 +16,9 @@ class CampusnetServiceProvider extends ServiceProvider
 	 */
 	public function boot(Router $router)
 	{
+        // Use Bootstrap as paginator views
+        Paginator::useBootstrap();
+        
 		// Add package's view
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'campusnet');
 

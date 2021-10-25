@@ -20,6 +20,11 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
 
     // Course
     Route::get('/course', '\Ajifatur\Campusnet\Http\Controllers\Site\CourseController@index')->name('site.course.index');
+    Route::get('/course/{slug}', '\Ajifatur\Campusnet\Http\Controllers\Site\CourseController@detail')->name('site.course.detail');
+
+    // Category
+    Route::get('/category', '\Ajifatur\Campusnet\Http\Controllers\Site\CategoryController@index')->name('site.category.index');
+    Route::get('/category/{slug}', '\Ajifatur\Campusnet\Http\Controllers\Site\CategoryController@detail')->name('site.category.detail');
 
     // Login
     Route::get('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@show')->name('auth.login');

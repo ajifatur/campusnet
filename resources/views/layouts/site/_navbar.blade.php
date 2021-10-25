@@ -20,8 +20,8 @@
                 </div>
             </form>
             <ul class="navbar-nav ms-auto align-items-lg-center">
-                <li class="nav-item order-lg-0 order-2 {{ strpos(Request::url(), '/kategori') ? 'active' : '' }}">
-                    <a class="nav-link font-weight-bold" href="/kategori">Kategori</a>
+                <li class="nav-item order-lg-0 order-2 {{ is_int(strpos(Request::url(), route('site.category.index'))) ? 'active' : '' }}">
+                    <a class="nav-link font-weight-bold" href="{{ route('site.category.index') }}">Kategori</a>
                 </li>
                 <li class="nav-item order-lg-0 order-3 {{ is_int(strpos(Request::url(), route('site.course.index'))) ? 'active' : '' }}">
                     <a class="nav-link font-weight-bold" href="{{ route('site.course.index') }}">Kelas</a>
@@ -30,7 +30,7 @@
         </div>
 
         @if(Auth::guest())
-        <a class="btn btn-primary rounded-3 px-3 ms-0 ms-lg-2" href="{{ route('auth.login') }}">Masuk</a>
+        <a class="btn btn-theme-1 rounded-3 px-3 ms-0 ms-lg-2" href="{{ route('auth.login') }}">Masuk</a>
         @else
         <div class="dropdown dropdown-user order-lg-0 order-1">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
