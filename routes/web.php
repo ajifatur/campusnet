@@ -21,6 +21,8 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
     // Course
     Route::get('/course', '\Ajifatur\Campusnet\Http\Controllers\Site\CourseController@index')->name('site.course.index');
     Route::get('/course/{slug}', '\Ajifatur\Campusnet\Http\Controllers\Site\CourseController@detail')->name('site.course.detail');
+    Route::get('/course/{slug}/activity', '\Ajifatur\Campusnet\Http\Controllers\Site\CourseController@activity')->name('site.course.activity');
+    Route::post('/course/{slug}/register', '\Ajifatur\Campusnet\Http\Controllers\Site\CourseController@register')->name('site.course.register');
 
     // Category
     Route::get('/category', '\Ajifatur\Campusnet\Http\Controllers\Site\CategoryController@index')->name('site.category.index');

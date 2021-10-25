@@ -62,4 +62,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Socmed::class);
     }
+
+    /**
+     * The course history that belong to the course.
+     */
+    public function course_history()
+    {
+        return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
+    }
 }

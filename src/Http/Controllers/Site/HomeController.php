@@ -12,10 +12,9 @@ class HomeController extends \App\Http\Controllers\Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         // Get categories
         $categories = Category::limit(6)->get();

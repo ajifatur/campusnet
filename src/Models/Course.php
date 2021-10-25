@@ -49,4 +49,12 @@ class Course extends Model
     {
         return $this->hasMany(Topic::class);
     }
+
+    /**
+     * The learners that belong to the course.
+     */
+    public function learners()
+    {
+        return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
+    }
 }

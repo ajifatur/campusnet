@@ -65,10 +65,15 @@
             <div class="col-lg-3 order-first order-lg-last mb-3 mb-lg-0">
                 <div class="sticky-lg-top">
                     <div class="d-grid gap-2">
+                        @if(Auth::check() && Auth::user()->role_id == role('learner') && in_array(Auth::user()->id, $course->learners()->pluck('user_id')->toArray()))
                         <div class="progress rounded-3 shadow-sm">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success fw-bold" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100% dikerjakan</div>
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success fw-bold" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            <span class="progress-bar-label">0% dikerjakan</span>
                         </div>
-                        <a href="#" class="btn btn-theme-1 rounded-3 shadow-sm fw-bold btn-register">Belajar Sekarang</a>
+                        @endif
+                        @if(Auth::guest() || (Auth::check() && Auth::user()->role_id == role('learner')))
+                        <a href="#" class="btn btn-theme-1 rounded-3 shadow-sm fw-bold btn-register-course">Belajar Sekarang</a>
+                        @endif
                     </div>
                     <div class="card rounded-2 mt-2">
                         <div class="card-body text-center">
@@ -84,14 +89,32 @@
     </div>
 </div>
 
+<form id="form-register-course" class="d-none" action="{{ route('site.course.register', ['slug' => $course->slug]) }}" method="post">
+    @csrf
+    <input type="hidden" name="id" value="{{ $course->id }}">
+</form>
+
+@endsection
+
+@section('js')
+
+<script type="text/javascript">
+    // Button Register Course
+    $(document).on("click", ".btn-register-course", function(e) {
+        e.preventDefault();
+        $("#form-register-course").submit();
+    });
+</script>
+
 @endsection
 
 @section('css')
 
-<style>
+<style type="text/css">
     .accordion-button:not(.collapsed) {background-color: var(--color-1); color: #fff;}
     .sticky-lg-top {top: 70px;}
-    .progress {height: 2.25rem; line-height: 2.25rem;}
+    .progress {height: 2.25rem; position: relative;}
+    .progress .progress-bar-label {height: 2.25rem; line-height: 2.25rem; font-weight: bold; position: absolute; width: 100%; text-align: center;}
 </style>
 
 @endsection
