@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Ajifatur\Helpers\DateTime as DateTimeExt;
 use Ajifatur\Campusnet\Models\User;
 
@@ -79,10 +80,10 @@ class UserSettingController extends \App\Http\Controllers\Controller
         // Validation
         $validator = Validator::make($request->all(), [
             'email' => [
-                'required', 'email', Rule::unique('users')->ignore($request->id, 'id')
+                'required', 'email', Rule::unique('users')->ignore(Auth::user()->id, 'id')
             ],
             'username' => [
-                'required', 'alpha_dash', 'min:4', Rule::unique('users')->ignore($request->id, 'id')
+                'required', 'alpha_dash', 'min:4', Rule::unique('users')->ignore(Auth::user()->id, 'id')
             ],
         ]);
         

@@ -37,7 +37,7 @@ class MediaController extends \App\Http\Controllers\Controller
                     if($request->query('type') == 'file')
                         array_push($files, ['id' => $file->id, 'name' => $file->name]);
                     elseif($request->query('type') == 'uploaded-video') {
-                        $file_info = file_info($file->name);
+                        $file_info = FileExt::info($file->name);
                         if(in_array($file_info['extension'], ['mp4', 'mkv', 'mov', 'avi', 'flv', 'mpg', 'mpeg'])) array_push($files, ['id' => $file->id, 'name' => $file->name]);
                     }
                 }
