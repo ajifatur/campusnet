@@ -1,12 +1,14 @@
-@extends('campusnet::layouts/main')
+@extends('campusnet::layouts/admin/main')
+
+@section('title', 'Edit Kelas: '.$course->name)
 
 @section('content')
 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Edit Kelas</h1>
+</div>
 <div class="row">
-    <div class="col-lg-2 col-md-3">
-        @include('campusnet::admin/course/_sidebar')
-    </div>
-    <div class="col-lg-10 col-md-9">
+	<div class="col-12">
         <div class="card">
             <div class="card-body">
                 <form method="post" action="{{ route('admin.course.update') }}" enctype="multipart/form-data">
@@ -55,7 +57,7 @@
                 </form>
             </div>
         </div>
-    </div>
+	</div>
 </div>
 
 @endsection

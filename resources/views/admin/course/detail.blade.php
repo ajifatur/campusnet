@@ -1,23 +1,36 @@
-@extends('campusnet::layouts/main')
+@extends('campusnet::layouts/admin/main')
+
+@section('title', 'Detail Kelas: '.$course->name)
 
 @section('content')
 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Detail Kelas</h1>
+</div>
 <div class="row">
-    <div class="col-lg-2 col-md-3">
-        @include('campusnet::admin/course/_sidebar')
-    </div>
-    <div class="col-lg-8 col-md-6">
+    <div class="col-md-4 col-xl-3">
         <div class="card">
-            <div class="card-header"><h6 class="mb-0">Topik Kelas</h6></div>
+            <div class="card-header"><h5 class="card-title mb-0">Tentang Kelas</h5></div>
+            <div class="card-body">
+                <p><strong>Nama:</strong><br>{{ $course->name }}</p>
+                <p><strong>Kategori:</strong><br>{{ $course->category->name }}</p>
+                <p><strong>Deskripsi:</strong><br>{!! nl2br($course->description) !!}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-xl-9">
+        <div class="card">
+            <div class="card-header"><h5 class="card-title mb-0">Topik Kelas</h5></div>
             <div class="card-body">
                 @if(Session::get('message'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ Session::get('message') }}
+                    <div class="alert-message">{{ Session::get('message') }}</div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
 
                 <a href="{{ route('admin.topic.create', ['course_id' => $course->id]) }}" class="btn btn-sm btn-outline-secondary mb-3"><i class="bi-plus me-1"></i>Tambah Topik</a>
+                <br>
 
                 @if(count($course->topics) > 0)
                 <!-- Topic -->
@@ -74,16 +87,6 @@
                     <em class="text-danger">Belum ada topik.</em>
                 @endif
 
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2 col-md-3">
-        <div class="card">
-            <div class="card-header"><h6 class="mb-0">Tentang Kelas</h6></div>
-            <div class="card-body">
-                <p><strong>Nama:</strong><br>{{ $course->name }}</p>
-                <p><strong>Kategori:</strong><br>{{ $course->category->name }}</p>
-                <p><strong>Deskripsi:</strong><br>{!! nl2br($course->description) !!}</p>
             </div>
         </div>
     </div>

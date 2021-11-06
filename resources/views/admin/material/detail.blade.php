@@ -1,14 +1,26 @@
-@extends('campusnet::layouts/main')
+@extends('campusnet::layouts/admin/main')
+
+@section('title', 'Detail Materi di '.$course->name.': '.$material->name)
 
 @section('content')
 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Detail Materi</h1>
+</div>
 <div class="row">
-    <div class="col-lg-2 col-md-3">
-        @include('campusnet::admin/course/_sidebar')
-    </div>
-    <div class="col-lg-8 col-md-6">
+    <div class="col-md-4 col-xl-3">
         <div class="card">
-            <div class="card-header"><h6 class="mb-0">Materi Kelas</h6></div>
+            <div class="card-header"><h5 class="card-title mb-0">Tentang Kelas</h5></div>
+            <div class="card-body">
+                <p><strong>Nama:</strong><br>{{ $course->name }}</p>
+                <p><strong>Kategori:</strong><br>{{ $course->category->name }}</p>
+                <p><strong>Deskripsi:</strong><br>{!! nl2br($course->description) !!}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-xl-9">
+        <div class="card">
+            <div class="card-header"><h5 class="card-title mb-0">Materi Kelas</h5></div>
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="mb-0"><i class="{{ $material->type->icon }} me-1" data-bs-toggle="tooltip" title="{{ $material->type->name }}"></i> {{ $material->name }}</h6>
@@ -32,16 +44,6 @@
                     <p><strong>Tanggal Selesai:</strong><br>{{ $content ? date('d/m/Y H:i', strtotime($content->end_at)) : '-' }}</p>
                 @endif
 
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2 col-md-3">
-        <div class="card">
-            <div class="card-header"><h6 class="mb-0">Tentang Kelas</h6></div>
-            <div class="card-body">
-                <p><strong>Nama:</strong><br>{{ $course->name }}</p>
-                <p><strong>Kategori:</strong><br>{{ $course->category->name }}</p>
-                <p><strong>Deskripsi:</strong><br>{!! nl2br($course->description) !!}</p>
             </div>
         </div>
     </div>

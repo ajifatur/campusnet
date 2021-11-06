@@ -1,22 +1,25 @@
-@extends('campusnet::layouts/main')
+@extends('campusnet::layouts/admin/main')
+
+@section('title', 'Kelola Kelas')
 
 @section('content')
 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Kelola Kelas</h1>
+    <a href="{{ route('admin.course.create') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Kelas</a>
+</div>
 <div class="row">
-    <div class="col-lg-2 col-md-3">
-        @include('campusnet::admin/course/_sidebar')
-    </div>
-    <div class="col-lg-10 col-md-9">
-        <div class="card">
+	<div class="col-12">
+		<div class="card">
             <div class="card-body">
                 @if(Session::get('message'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ Session::get('message') }}
+                    <div class="alert-message">{{ Session::get('message') }}</div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered" id="datatable">
+                    <table class="table table-sm table-hover table-bordered" id="datatable">
                         <thead class="bg-light">
                             <tr>
                                 <th width="30"><input type="checkbox" class="form-check-input checkbox-all"></th>
@@ -45,8 +48,8 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 <form class="form-delete d-none" method="post" action="{{ route('admin.course.delete') }}">

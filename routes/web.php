@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['campusnet.guest']], function() {
     // Home
-    Route::get('/', '\Ajifatur\Campusnet\Http\Controllers\Site\HomeController@index')->name('site.home');
+    Route::get('/', '\Ajifatur\Campusnet\Http\Controllers\Site\HomeController@index')->name('home');
 
     // Course
     Route::get('/course', '\Ajifatur\Campusnet\Http\Controllers\Site\CourseController@index')->name('site.course.index');

@@ -1,20 +1,16 @@
-@extends('campusnet::layouts/main')
+@extends('campusnet::layouts/admin/main')
+
+@section('title', 'Tambah Pengguna')
 
 @section('content')
 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Tambah Pengguna</h1>
+</div>
 <div class="row">
-    <div class="col-lg-2 col-md-3">
-        @include('campusnet::admin/user/_sidebar')
-    </div>
-    <div class="col-lg-10 col-md-9">
+	<div class="col-12">
         <div class="card">
             <div class="card-body">
-                @if(Session::get('message'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ Session::get('message') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
                 <form method="post" action="{{ route('admin.user.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-3">
@@ -134,7 +130,7 @@
                 </form>
             </div>
         </div>
-    </div>
+	</div>
 </div>
 
 @endsection

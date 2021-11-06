@@ -1,23 +1,26 @@
-@extends('campusnet::layouts/main')
+@extends('campusnet::layouts/admin/main')
+
+@section('title', 'Kelola Hak Akses')
 
 @section('content')
 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Kelola Hak Akses</h1>
+    <a href="{{ route('admin.permission.create') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Hak Akses</a>
+</div>
 <div class="row">
-    <div class="col-lg-2 col-md-3">
-        @include('campusnet::admin/user/_sidebar')
-    </div>
-    <div class="col-lg-10 col-md-9">
+	<div class="col-12">
         <div class="card">
             <div class="card-body">
                 @if(Session::get('message'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ Session::get('message') }}
+                    <div class="alert-message">{{ Session::get('message') }}</div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
                 <p class="fst-italic small text-muted"><i class="bi-info-circle me-1"></i> Tekan dan geser hak akses di bawah ini untuk mengurutkannya.</p>
                 <div class="table-responsive">
-                    <table class="table table-sm table-hover table-bordered">
+                    <table class="table table-sm table-sm table-hover table-bordered">
                         <thead class="bg-light">
                             <tr>
                                 <th>Akses</th>
@@ -57,7 +60,7 @@
                 </div>
             </div>
         </div>
-    </div>
+	</div>
 </div>
 
 <form class="form-delete d-none" method="post" action="{{ route('admin.permission.delete') }}">

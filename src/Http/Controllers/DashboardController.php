@@ -18,6 +18,7 @@ class DashboardController extends \App\Http\Controllers\Controller
     public function index(Request $request)
     {
         // View
+        // return view('campusnet::admin/dashboard/index');
         return view('campusnet::admin/dashboard/index');
     }
 }

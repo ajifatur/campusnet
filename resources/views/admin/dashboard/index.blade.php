@@ -1,19 +1,20 @@
-@extends('campusnet::layouts/main')
+@extends('campusnet::layouts/admin/main')
+
+@section('title', 'Dashboard')
 
 @section('content')
 
+<h1 class="h3 mb-3">Dashboard</h1>
 <div class="row">
-    @for($i=1; $i<=4; $i++)
-    <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card text-dark bg-light mb-3">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h5 class="card-title">Light card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
-    </div>
-    @endfor
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<h5 class="card-title mb-0">Empty card</h5>
+			</div>
+			<div class="card-body">
+			</div>
+		</div>
+	</div>
 </div>
 
 @endsection
