@@ -4,8 +4,8 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-0">Kelola Pengguna</h1>
+<div class="d-sm-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-2 mb-sm-0">Kelola Pengguna</h1>
     <a href="{{ route('admin.user.create') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Pengguna</a>
 </div>
 <div class="row">
