@@ -37,6 +37,22 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserAttribute::class);
     }
+
+    /**
+     * Get the account associated with the user.
+     */
+    public function account()
+    {
+        return $this->hasOne(UserAccount::class);
+    }
+
+    /**
+     * Get the avatars for the user.
+     */
+    public function avatars()
+    {
+        return $this->hasMany(UserAvatar::class);
+    }
     
     /**
      * Get the role that owns the user.

@@ -17,10 +17,10 @@ class GuestMiddleware
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if(Auth::guard($guard)->check() && in_array($request->user()->role_id, [role('admin'), role('manager'), role('instructor')]) && is_int(strpos($request->path(), 'login'))) {
+        if(Auth::guard($guard)->check() && $request->user()->role->is_admin == 1 && is_int(strpos($request->path(), 'login'))) {
             return redirect()->route('admin.dashboard');
         }
-        elseif(Auth::guard($guard)->check() && in_array($request->user()->role_id, [role('learner')]) && is_int(strpos($request->path(), 'login'))) {
+        elseif(Auth::guard($guard)->check() && $request->user()->role->is_admin == 0 && is_int(strpos($request->path(), 'login'))) {
             return redirect('/');
         }
 

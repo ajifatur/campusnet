@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Ajifatur\Campusnet\Models\User;
-use Ajifatur\Campusnet\Models\Socmed;
+use Ajifatur\Campusnet\DefaultModels\UserAccount;
 
 class LoginController extends \App\Http\Controllers\Controller
 {
@@ -58,9 +58,9 @@ class LoginController extends \App\Http\Controllers\Controller
             }
 
             // Redirect
-            if(in_array($request->user()->role_id, [role('admin'), role('manager'), role('instructor')]))
+            if($request->user()->role->is_admin == 1)
                 return redirect()->route('admin.dashboard');
-            elseif(in_array($request->user()->role_id, [role('learner')]))
+            else
                 return redirect('/');
         }
 
@@ -124,7 +124,7 @@ class LoginController extends \App\Http\Controllers\Controller
      */
     public function findOrCreateUser($user, $provider)
     {
-        $authUser = Socmed::where('provider_id','=',$user->getId())->where('provider_name','=',$provider)->first();
+        $authUser = UserAccount::where('provider_id','=',$user->getId())->where('provider_name','=',$provider)->first();
 
         if($authUser) {
             return $authUser;
@@ -139,18 +139,19 @@ class LoginController extends \App\Http\Controllers\Controller
                 $data->name = $user->getName();
                 $data->username = $user->getNickname();
                 $data->email = $user->getEmail();
-				$data->photo = $user->getAvatar();
+				$data->avatar = $user->getAvatar();
 				$data->status = 1;
-				$data->email_verified = 1;
+				$data->last_visit = null;
+				$data->email_verified_at = null;
                 $data->save();
             }
 				
-            // Save the socmed
-            $socmed = new Socmed;
-            $socmed->user_id = $data->id;
-            $socmed->provider_id = $user->getId();
-            $socmed->provider_name = $provider;
-            $socmed->save();
+            // Save the user account
+            $user_account = new UserAccount;
+            $user_account->user_id = $data->id;
+            $user_account->provider_id = $user->getId();
+            $user_account->provider_name = $provider;
+            $user_account->save();
 
             return $data;
         }

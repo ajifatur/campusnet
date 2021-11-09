@@ -25,6 +25,7 @@
                                 <th width="30"><input type="checkbox" class="form-check-input checkbox-all"></th>
                                 <th>Nama</th>
                                 <th>Kode</th>
+                                <th width="80">Status</th>
                                 <th width="60">Opsi</th>
                             </tr>
                         </thead>
@@ -34,6 +35,7 @@
                                 <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td>{{ $role->name }}</td>
                                 <td>{{ $role->code }}</td>
+                                <td><span class="badge {{ $role->is_admin == 1 ? 'bg-success' : 'bg-danger' }}">{{ $role->is_admin == 1 ? 'Ya' : 'Tidak' }}</span></td>
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.role.edit', ['id' => $role->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
