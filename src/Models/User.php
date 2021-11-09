@@ -2,7 +2,7 @@
 
 namespace Ajifatur\Campusnet\Models;
 
-class User extends \Ajifatur\Campusnet\DefaultModels\User
+class User extends \Ajifatur\FaturHelper\Models\User
 {
     /**
      * Get the courses for the user.

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Ajifatur\Campusnet\Models\User;
-use Ajifatur\Campusnet\DefaultModels\UserAccount;
+use Ajifatur\FaturHelper\Models\UserAccount;
 
 class LoginController extends \App\Http\Controllers\Controller
 {

@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ajifatur\Helpers\DateTime as DateTimeExt;
 use Ajifatur\Campusnet\Models\User;
-use Ajifatur\Campusnet\DefaultModels\Role;
-use Ajifatur\Campusnet\DefaultModels\UserAttribute;
+use Ajifatur\FaturHelper\Models\Role;
+use Ajifatur\FaturHelper\Models\UserAttribute;
 
 class UserController extends \App\Http\Controllers\Controller
 {

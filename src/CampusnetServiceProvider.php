@@ -50,9 +50,15 @@ class CampusnetServiceProvider extends ServiceProvider
             require_once $filename;
         }
 
-        // Load helpers from FaturHelper
+        // Load from FaturHelper
         if(File::exists(base_path('vendor/ajifatur/faturhelper/src'))){
+            // Load helpers
             foreach(glob(base_path('vendor/ajifatur/faturhelper/src').'/HelpersExt/*.php') as $filename){
+                require_once $filename;
+            }
+
+            // Load models
+            foreach(glob(base_path('vendor/ajifatur/faturhelper/src').'/Models/*.php') as $filename){
                 require_once $filename;
             }
         }

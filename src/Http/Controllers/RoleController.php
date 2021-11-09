@@ -6,7 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Ajifatur\Campusnet\DefaultModels\Role;
+use Ajifatur\FaturHelper\Models\Role;
 
 class RoleController extends \App\Http\Controllers\Controller
 {
