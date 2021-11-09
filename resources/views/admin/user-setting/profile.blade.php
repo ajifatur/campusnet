@@ -8,7 +8,7 @@
     <h1 class="h3 mb-0">Pengaturan Profil</h1>
 </div>
 <div class="row">
-    <div class="col-md-4 col-xl-3">
+    <div class="col-md-4 col-xl-3 mb-3 mb-md-0">
         <div class="list-group">
             <a href="{{ route('admin.settings.profile') }}" class="list-group-item list-group-item-action py-2 px-3 {{ is_int(strpos(Request::url(), route('admin.settings.profile'))) ? 'active' : '' }}">Profil</a>
             <a href="{{ route('admin.settings.account') }}" class="list-group-item list-group-item-action py-2 px-3 {{ is_int(strpos(Request::url(), route('admin.settings.account'))) ? 'active' : '' }}">Akun</a>
@@ -66,7 +66,10 @@
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Nomor Telepon <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
-                            <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ Auth::user()->attribute->phone_number }}">
+                            <div class="input-group">
+                                <select name="country_code" class="form-select form-control-sm" id="select2" style="width: 40%"></select>
+                                <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ Auth::user()->attribute->phone_number }}">
+                            </div>
                             @if($errors->has('phone_number'))
                             <div class="small text-danger">{{ $errors->first('phone_number') }}</div>
                             @endif
@@ -89,8 +92,30 @@
 
 @section('js')
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
+    // Get Country Codes
+    $(window).on("load", function() {
+        var country_code = "{{ Auth::user()->attribute->country_code }}";
+        $.ajax({
+            type: "get",
+            url: "{{ route('api.country-code') }}",
+            success: function(response) {
+                var html = '<option value="" disabled selected>--Pilih Kode Dial--</option>';
+                for(var i = 0; i < response.length; i++) {
+                    var selected = (country_code === response[i].code) ? 'selected' : '';
+                    html += '<option value="' + response[i].code + '" ' + selected + '>' + response[i].name + ' (' + response[i].dial_code + ')' + '</option>';
+                }
+                $("#select2").html(html);
+            }
+        });
+    });
+    $("#select2").select2({
+        width: 'resolve',
+        allowClear: true
+    });
+
     // Datepicker
     $("input[name=birthdate]").datepicker({
         format: "dd/mm/yyyy",
@@ -103,6 +128,7 @@
 
 @section('css')
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 @endsection

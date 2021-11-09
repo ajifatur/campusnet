@@ -55,6 +55,8 @@ class UserSettingController extends \App\Http\Controllers\Controller
                 $user->attribute->birthdate = DateTimeExt::change($request->birthdate);
                 $user->attribute->gender = $request->gender;
                 $user->attribute->phone_number = $request->phone_number;
+                $user->attribute->country_code = $request->country_code;
+                $user->attribute->dial_code = dial_code($request->dial_code);
                 $user->attribute->save();
             }
 

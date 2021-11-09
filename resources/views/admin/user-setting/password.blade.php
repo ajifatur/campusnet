@@ -8,7 +8,7 @@
     <h1 class="h3 mb-0">Pengaturan Kata Sandi</h1>
 </div>
 <div class="row">
-    <div class="col-md-4 col-xl-3">
+    <div class="col-md-4 col-xl-3 mb-3 mb-md-0">
         <div class="list-group">
             <a href="{{ route('admin.settings.profile') }}" class="list-group-item list-group-item-action py-2 px-3 {{ is_int(strpos(Request::url(), route('admin.settings.profile'))) ? 'active' : '' }}">Profil</a>
             <a href="{{ route('admin.settings.account') }}" class="list-group-item list-group-item-action py-2 px-3 {{ is_int(strpos(Request::url(), route('admin.settings.account'))) ? 'active' : '' }}">Akun</a>

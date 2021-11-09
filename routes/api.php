@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 // Media
 Route::get('/media', '\Ajifatur\Campusnet\Http\Controllers\MediaController@index')->name('api.media.index');
 Route::post('/media/upload', '\Ajifatur\Campusnet\Http\Controllers\MediaController@upload')->name('api.media.upload');
+
+// Country Code
+Route::get('/country-code', function() {
+    return response()->json(country(), 200);
+})->name('api.country-code');
