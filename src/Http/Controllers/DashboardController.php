@@ -5,7 +5,6 @@ namespace Ajifatur\Campusnet\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Ajifatur\Campusnet\Models\Role;
 
 class DashboardController extends \App\Http\Controllers\Controller
 {

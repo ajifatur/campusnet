@@ -48,10 +48,15 @@ class UserSettingController extends \App\Http\Controllers\Controller
             // Update the user profile
             $user = User::find(Auth::user()->id);
             $user->name = $request->name;
-            $user->birthdate = DateTimeExt::change($request->birthdate);
-            $user->gender = $request->gender;
-            $user->phone_number = $request->phone_number;
             $user->save();
+
+            // Update the user attribute
+            if($user->attribute) {
+                $user->attribute->birthdate = DateTimeExt::change($request->birthdate);
+                $user->attribute->gender = $request->gender;
+                $user->attribute->phone_number = $request->phone_number;
+                $user->attribute->save();
+            }
 
             // Redirect
             return redirect()->route('admin.settings.profile')->with(['message' => 'Berhasil mengupdate data.']);

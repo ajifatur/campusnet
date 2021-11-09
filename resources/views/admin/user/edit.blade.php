@@ -27,7 +27,7 @@
                         <label class="col-lg-2 col-md-3 col-form-label">Tanggal Lahir <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             <div class="input-group input-group-sm">
-                                <input type="text" name="birthdate" class="form-control form-control-sm {{ $errors->has('birthdate') ? 'border-danger' : '' }}" value="{{ date('d/m/Y', strtotime($user->birthdate)) }}" autocomplete="off">
+                                <input type="text" name="birthdate" class="form-control form-control-sm {{ $errors->has('birthdate') ? 'border-danger' : '' }}" value="{{ date('d/m/Y', strtotime($user->attribute->birthdate)) }}" autocomplete="off">
                                 <span class="input-group-text {{ $errors->has('birthdate') ? 'border-danger' : '' }}"><i class="bi-calendar2"></i></span>
                             </div>
                             @if($errors->has('birthdate'))
@@ -40,7 +40,7 @@
                         <div class="col-lg-10 col-md-9">
                             @foreach(gender() as $gender)
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" id="gender-{{ $gender['key'] }}" value="{{ $gender['key'] }}" {{ $user->gender == $gender['key'] ? 'checked' : '' }}>
+                                <input class="form-check-input" type="radio" name="gender" id="gender-{{ $gender['key'] }}" value="{{ $gender['key'] }}" {{ $user->attribute->gender == $gender['key'] ? 'checked' : '' }}>
                                 <label class="form-check-label" for="gender-{{ $gender['key'] }}">
                                     {{ $gender['name'] }}
                                 </label>
@@ -54,7 +54,7 @@
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Nomor Telepon <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
-                            <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ $user->phone_number }}">
+                            <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ $user->attribute->phone_number }}">
                             @if($errors->has('phone_number'))
                             <div class="small text-danger">{{ $errors->first('phone_number') }}</div>
                             @endif

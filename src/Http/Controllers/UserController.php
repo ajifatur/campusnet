@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ajifatur\Helpers\DateTime as DateTimeExt;
 use Ajifatur\Campusnet\Models\User;
-use Ajifatur\Campusnet\Models\Role;
+use Ajifatur\Campusnet\DefaultModels\Role;
+use Ajifatur\Campusnet\DefaultModels\UserAttribute;
 
 class UserController extends \App\Http\Controllers\Controller
 {
@@ -83,17 +84,23 @@ class UserController extends \App\Http\Controllers\Controller
             $user = new User;
             $user->role_id = $request->role;
             $user->name = $request->name;
-            $user->birthdate = DateTimeExt::change($request->birthdate);
-            $user->gender = $request->gender;
-            $user->phone_number = $request->phone_number;
             $user->email = $request->email;
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
+            $user->access_token = access_token();
             $user->status = $request->status;
-            $user->photo = '';
-            $user->email_verified = 1;
+            $user->avatar = '';
+            $user->email_verified_at = null;
             $user->last_visit = null;
             $user->save();
+
+            // Save the user attribute
+            $user_attribute = new UserAttribute;
+            $user_attribute->user_id = $user->id;
+            $user_attribute->birthdate = DateTimeExt::change($request->birthdate);
+            $user_attribute->gender = $request->gender;
+            $user_attribute->phone_number = $request->phone_number;
+            $user_attribute->save();
 
             // Redirect
             return redirect()->route('admin.user.index')->with(['message' => 'Berhasil menambah data.']);
@@ -159,14 +166,20 @@ class UserController extends \App\Http\Controllers\Controller
             $user = User::find($request->id);
             $user->role_id = $request->role;
             $user->name = $request->name;
-            $user->birthdate = DateTimeExt::change($request->birthdate);
-            $user->gender = $request->gender;
-            $user->phone_number = $request->phone_number;
             $user->email = $request->email;
             $user->username = $request->username;
             $user->password = $request->password != '' ? bcrypt($request->password) : $user->password;
+            $user->access_token = access_token();
             $user->status = $request->status;
             $user->save();
+
+            // Update the user attribute
+            if($user->attribute) {
+                $user->attribute->birthdate = DateTimeExt::change($request->birthdate);
+                $user->attribute->gender = $request->gender;
+                $user->attribute->phone_number = $request->phone_number;
+                $user->attribute->save();
+            }
 
             // Redirect
             return redirect()->route('admin.user.index')->with(['message' => 'Berhasil mengupdate data.']);

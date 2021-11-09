@@ -1,6 +1,6 @@
 <?php
 
-namespace Ajifatur\Campusnet\Models;
+namespace Ajifatur\Campusnet\DefaultModels;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,14 +17,13 @@ class Permission extends Model
     protected $table = 'permissions';
 
     /**
-     * Fill the model with an array of attributes.
+     * The attributes that are mass assignable.
      *
-     * @param  array  $attributes
-     * @return $this
-     *
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @var array
      */
-    protected $fillable = ['name', 'code', 'num_order'];
+    protected $fillable = [
+        'name', 'code', 'num_order'
+    ];
 
     /**
      * The roles that belong to the permission.

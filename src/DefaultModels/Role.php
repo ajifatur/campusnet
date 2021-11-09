@@ -1,6 +1,6 @@
 <?php
 
-namespace Ajifatur\Campusnet\Models;
+namespace Ajifatur\Campusnet\DefaultModels;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,21 +17,20 @@ class Role extends Model
     protected $table = 'roles';
 
     /**
-     * Fill the model with an array of attributes.
+     * The attributes that are mass assignable.
      *
-     * @param  array  $attributes
-     * @return $this
-     *
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @var array
      */
-    protected $fillable = ['name', 'code'];
+    protected $fillable = [
+        'name', 'code', 'is_admin', 'num_order'
+    ];
 
     /**
      * Get the users for the role.
      */
     public function users()
     {
-        return $this->hasMany(\App\Models\User::class);
+        return $this->hasMany(User::class);
     }
 
     /**

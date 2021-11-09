@@ -47,8 +47,17 @@ class LoginController extends \App\Http\Controllers\Controller
 
         // Auth attempt
         if(Auth::attempt($credentials)) {
+            // Regenerate session
             $request->session()->regenerate();
 
+            // Update user's last visit
+            $user = User::find($request->user()->id);
+            if($user) {
+                $user->last_visit = date('Y-m-d H:i:s');
+                $user->save();
+            }
+
+            // Redirect
             if(in_array($request->user()->role_id, [role('admin'), role('manager'), role('instructor')]))
                 return redirect()->route('admin.dashboard');
             elseif(in_array($request->user()->role_id, [role('learner')]))

@@ -6,8 +6,8 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Ajifatur\Campusnet\Models\Permission;
-use Ajifatur\Campusnet\Models\Role;
+use Ajifatur\Campusnet\DefaultModels\Permission;
+use Ajifatur\Campusnet\DefaultModels\Role;
 
 class PermissionController extends \App\Http\Controllers\Controller
 {
