@@ -35,7 +35,8 @@
                 @if(count($course->topics) > 0)
                 <!-- Topic -->
                 <p class="fst-italic small text-muted"><i class="bi-info-circle me-1"></i> Tekan dan geser topik di bawah ini untuk mengurutkannya.</p>
-                <div class="sortable-topic">
+                <div class="sortable" data-url="{{ route('admin.topic.sort') }}">
+                    @csrf
                     @foreach($course->topics()->orderBy('num_order','asc')->get() as $topic)
                     <div class="card mb-2" data-id="{{ $topic->id }}">
                         <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
@@ -59,7 +60,7 @@
                                 <div class="card-body">
                                     @if(count($topic->materials)>0)
                                         <p class="fst-italic small text-muted"><i class="bi-info-circle me-1"></i> Tekan dan geser materi di bawah ini untuk mengurutkannya.</p>
-                                        <div class="list-group sortable-material">
+                                        <div class="list-group sortable" data-url="{{ route('admin.material.sort') }}">
                                             @foreach($topic->materials()->orderBy('num_order','asc')->get() as $material)
                                                 <div class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $material->id }}">
                                                     <div>
@@ -124,38 +125,7 @@
     Spandiv.ButtonDelete(".btn-delete-material", ".form-delete-material");
 
     // Sortable Topic
-    Spandiv.Sortable(".sortable-topic", function(event, ui) {
-        var items = $(this).find(".ui-sortable-handle");
-        var ids = [];
-        $(items).each(function(key,elem) {
-            ids.push($(elem).data("id"));
-        });
-        $.ajax({
-            type: "post",
-            url: "{{ route('admin.topic.sort') }}",
-            data: {_token: "{{ csrf_token() }}", ids: ids},
-            success: function(response) {
-                Spandiv.Toast("#toast-sort", response);
-            }
-        });
-    });
-
-    // Sortable Material
-    Spandiv.Sortable(".sortable-material", function(event, ui) {
-        var items = $(this).find(".ui-sortable-handle");
-        var ids = [];
-        $(items).each(function(key,elem) {
-            ids.push($(elem).data("id"));
-        });
-        $.ajax({
-            type: "post",
-            url: "{{ route('admin.material.sort') }}",
-            data: {_token: "{{ csrf_token() }}", ids: ids},
-            success: function(response) {
-                Spandiv.Toast("#toast-sort", response);
-            }
-        });
-    });
+    Spandiv.Sortable(".sortable");
 </script>
 
 @endsection

@@ -25,7 +25,7 @@
                                 <th width="30"><input type="checkbox" class="form-check-input checkbox-all"></th>
                                 <th>Nama</th>
                                 <th>Kode</th>
-                                <th width="80">Status</th>
+                                <th width="80">Admin</th>
                                 <th width="60">Opsi</th>
                             </tr>
                         </thead>
