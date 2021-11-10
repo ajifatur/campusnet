@@ -116,7 +116,6 @@
 
 @section('js')
 
-<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript">
     // Button Delete Topic
     Spandiv.ButtonDelete(".btn-delete-topic", ".form-delete-topic");

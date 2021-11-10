@@ -89,6 +89,7 @@ class UserController extends \App\Http\Controllers\Controller
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
             $user->access_token = access_token();
+            $user->remember_token = null;
             $user->status = $request->status;
             $user->avatar = '';
             $user->email_verified_at = null;

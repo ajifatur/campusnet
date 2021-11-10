@@ -195,11 +195,6 @@
 
 @section('js')
 
-<script src="https://campusdigital.id/assets/plugins/quill/quill.min.js"></script>
-<script src="https://cdn.rawgit.com/kensnyder/quill-image-resize-module/3411c9a7/image-resize.min.js"></script>
-<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
 <script type="text/javascript">
     // Quill Editor
     Spandiv.Quill("#quill-editor");
@@ -390,8 +385,6 @@
 
 @section('css')
 
-<link rel="stylesheet" type="text/css" href="https://campusdigital.id/assets/plugins/quill/quill.snow.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 <style type="text/css">
     #quill-editor {height: 400px;}
 </style>

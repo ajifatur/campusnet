@@ -139,6 +139,9 @@ class LoginController extends \App\Http\Controllers\Controller
                 $data->name = $user->getName();
                 $data->username = $user->getNickname();
                 $data->email = $user->getEmail();
+                $data->password = null;
+                $data->access_token = access_token();
+                $data->remember_token = null;
 				$data->avatar = $user->getAvatar();
 				$data->status = 1;
 				$data->last_visit = null;
