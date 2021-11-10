@@ -54,9 +54,14 @@
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Nomor Telepon <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
-                            <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ $user->attribute->phone_number }}">
+                            <div class="input-group">
+                                <select name="country_code" class="form-select form-control-sm {{ $errors->has('country_code') ? 'border-danger' : '' }}" id="select2" style="width: 40%"></select>
+                                <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ $user->attribute->phone_number }}">
+                            </div>
                             @if($errors->has('phone_number'))
                             <div class="small text-danger">{{ $errors->first('phone_number') }}</div>
+                            @elseif($errors->has('country_code'))
+                            <div class="small text-danger">{{ $errors->first('country_code') }}</div>
                             @endif
                         </div>
                     </div>
@@ -139,8 +144,18 @@
 
 @section('js')
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
+    // Get Country Codes
+    Spandiv.Select2ServerSide("#select2", {
+        url: "{{ route('api.country-code') }}",
+        value: "{{ $user->attribute->country_code }}",
+        valueProp: "code",
+        nameProp: "name",
+        bracketProp: "dial_code"
+    });
+
     // Datepicker
     Spandiv.DatePicker("input[name=birthdate]");
 </script>
@@ -149,6 +164,7 @@
 
 @section('css')
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 @endsection

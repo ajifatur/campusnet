@@ -66,6 +66,7 @@ class UserController extends \App\Http\Controllers\Controller
             'name' => 'required|max:200',
             'birthdate' => 'required',
             'gender' => 'required',
+            'country_code' => 'required',
             'phone_number' => 'required|numeric',
             'email' => 'required|email|unique:users',
             'username' => 'required|alpha_dash|min:4|unique:users',
@@ -99,6 +100,8 @@ class UserController extends \App\Http\Controllers\Controller
             $user_attribute->user_id = $user->id;
             $user_attribute->birthdate = DateTimeExt::change($request->birthdate);
             $user_attribute->gender = $request->gender;
+            $user_attribute->country_code = $request->country_code;
+            $user_attribute->dial_code = dial_code($request->country_code);
             $user_attribute->phone_number = $request->phone_number;
             $user_attribute->save();
 
@@ -144,6 +147,7 @@ class UserController extends \App\Http\Controllers\Controller
             'name' => 'required|max:200',
             'birthdate' => 'required',
             'gender' => 'required',
+            'country_code' => 'required',
             'phone_number' => 'required|numeric',
             'email' => [
                 'required', 'email', Rule::unique('users')->ignore($request->id, 'id')
@@ -177,6 +181,8 @@ class UserController extends \App\Http\Controllers\Controller
             if($user->attribute) {
                 $user->attribute->birthdate = DateTimeExt::change($request->birthdate);
                 $user->attribute->gender = $request->gender;
+                $user->attribute->country_code = $request->country_code;
+                $user->attribute->dial_code = dial_code($request->country_code);
                 $user->attribute->phone_number = $request->phone_number;
                 $user->attribute->save();
             }

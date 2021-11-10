@@ -67,11 +67,13 @@
                         <label class="col-lg-2 col-md-3 col-form-label">Nomor Telepon <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             <div class="input-group">
-                                <select name="country_code" class="form-select form-control-sm" id="select2" style="width: 40%"></select>
+                                <select name="country_code" class="form-select form-control-sm {{ $errors->has('country_code') ? 'border-danger' : '' }}" id="select2" style="width: 40%"></select>
                                 <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ Auth::user()->attribute->phone_number }}">
                             </div>
                             @if($errors->has('phone_number'))
                             <div class="small text-danger">{{ $errors->first('phone_number') }}</div>
+                            @elseif($errors->has('country_code'))
+                            <div class="small text-danger">{{ $errors->first('country_code') }}</div>
                             @endif
                         </div>
                     </div>
@@ -96,32 +98,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
     // Get Country Codes
-    $(window).on("load", function() {
-        var country_code = "{{ Auth::user()->attribute->country_code }}";
-        $.ajax({
-            type: "get",
-            url: "{{ route('api.country-code') }}",
-            success: function(response) {
-                var html = '<option value="" disabled selected>--Pilih Kode Dial--</option>';
-                for(var i = 0; i < response.length; i++) {
-                    var selected = (country_code === response[i].code) ? 'selected' : '';
-                    html += '<option value="' + response[i].code + '" ' + selected + '>' + response[i].name + ' (' + response[i].dial_code + ')' + '</option>';
-                }
-                $("#select2").html(html);
-            }
-        });
-    });
-    $("#select2").select2({
-        width: 'resolve',
-        allowClear: true
+    Spandiv.Select2ServerSide("#select2", {
+        url: "{{ route('api.country-code') }}",
+        value: "{{ Auth::user()->attribute->country_code }}",
+        valueProp: "code",
+        nameProp: "name",
+        bracketProp: "dial_code"
     });
 
     // Datepicker
-    $("input[name=birthdate]").datepicker({
-        format: "dd/mm/yyyy",
-        todayHighlight: true,
-        autoclose: true
-    });
+    Spandiv.DatePicker("input[name=birthdate]");
 </script>
 
 @endsection
