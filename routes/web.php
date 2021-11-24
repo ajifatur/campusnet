@@ -29,19 +29,19 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
     Route::get('/category/{slug}', '\Ajifatur\Campusnet\Http\Controllers\Site\CategoryController@detail')->name('site.category.detail');
 
     // Login
-    Route::get('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@show')->name('auth.login');
-    Route::post('/login', '\Ajifatur\Campusnet\Http\Controllers\LoginController@authenticate')->name('auth.post-login');
+    Route::get('/login', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@show')->name('auth.login');
+    Route::post('/login', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@authenticate')->name('auth.post-login');
 
     if(config('campusnet.settings.socialite') == true) {
         // Socialite
-        Route::get('/auth/{provider}', '\Ajifatur\Campusnet\Http\Controllers\LoginController@redirectToProvider')->name('auth.login.provider');
-        Route::get('/auth/{provider}/callback', '\Ajifatur\Campusnet\Http\Controllers\LoginController@handleProviderCallback')->name('auth.login.callback-provider');
+        Route::get('/auth/{provider}', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@redirectToProvider')->name('auth.login.provider');
+        Route::get('/auth/{provider}/callback', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@handleProviderCallback')->name('auth.login.callback-provider');
     }
 });
 
 Route::group(['middleware' => ['campusnet.user']], function() {
     // Logout
-    Route::post('/logout', '\Ajifatur\Campusnet\Http\Controllers\LoginController@logout')->name('auth.logout');
+    Route::post('/logout', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@logout')->name('auth.logout');
 
     // Dashboard
     Route::get('/admin', '\Ajifatur\Campusnet\Http\Controllers\DashboardController@index')->name('admin.dashboard');
@@ -97,22 +97,22 @@ Route::group(['middleware' => ['campusnet.user']], function() {
     Route::post('/admin/user/delete', '\Ajifatur\Campusnet\Http\Controllers\UserController@delete')->name('admin.user.delete');
 
     // Role
-    Route::get('/admin/role', '\Ajifatur\Campusnet\Http\Controllers\RoleController@index')->name('admin.role.index');
-    Route::get('/admin/role/create', '\Ajifatur\Campusnet\Http\Controllers\RoleController@create')->name('admin.role.create');
-    Route::post('/admin/role/store', '\Ajifatur\Campusnet\Http\Controllers\RoleController@store')->name('admin.role.store');
-    Route::get('/admin/role/edit/{id}', '\Ajifatur\Campusnet\Http\Controllers\RoleController@edit')->name('admin.role.edit');
-    Route::post('/admin/role/update', '\Ajifatur\Campusnet\Http\Controllers\RoleController@update')->name('admin.role.update');
-    Route::post('/admin/role/delete', '\Ajifatur\Campusnet\Http\Controllers\RoleController@delete')->name('admin.role.delete');
+    Route::get('/admin/role', '\Ajifatur\FaturHelper\Http\Controllers\RoleController@index')->name('admin.role.index');
+    Route::get('/admin/role/create', '\Ajifatur\FaturHelper\Http\Controllers\RoleController@create')->name('admin.role.create');
+    Route::post('/admin/role/store', '\Ajifatur\FaturHelper\Http\Controllers\RoleController@store')->name('admin.role.store');
+    Route::get('/admin/role/edit/{id}', '\Ajifatur\FaturHelper\Http\Controllers\RoleController@edit')->name('admin.role.edit');
+    Route::post('/admin/role/update', '\Ajifatur\FaturHelper\Http\Controllers\RoleController@update')->name('admin.role.update');
+    Route::post('/admin/role/delete', '\Ajifatur\FaturHelper\Http\Controllers\RoleController@delete')->name('admin.role.delete');
 
     // Permission
-    Route::get('/admin/permission', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@index')->name('admin.permission.index');
-    Route::get('/admin/permission/create', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@create')->name('admin.permission.create');
-    Route::post('/admin/permission/store', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@store')->name('admin.permission.store');
-    Route::get('/admin/permission/edit/{id}', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@edit')->name('admin.permission.edit');
-    Route::post('/admin/permission/update', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@update')->name('admin.permission.update');
-    Route::post('/admin/permission/delete', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@delete')->name('admin.permission.delete');
-    Route::post('/admin/permission/sort', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@sort')->name('admin.permission.sort');
-    Route::post('/admin/permission/change', '\Ajifatur\Campusnet\Http\Controllers\PermissionController@change')->name('admin.permission.change');
+    Route::get('/admin/permission', '\Ajifatur\FaturHelper\Http\Controllers\PermissionController@index')->name('admin.permission.index');
+    Route::get('/admin/permission/create', '\Ajifatur\FaturHelper\Http\Controllers\PermissionController@create')->name('admin.permission.create');
+    Route::post('/admin/permission/store', '\Ajifatur\FaturHelper\Http\Controllers\PermissionController@store')->name('admin.permission.store');
+    Route::get('/admin/permission/edit/{id}', '\Ajifatur\FaturHelper\Http\Controllers\PermissionController@edit')->name('admin.permission.edit');
+    Route::post('/admin/permission/update', '\Ajifatur\FaturHelper\Http\Controllers\PermissionController@update')->name('admin.permission.update');
+    Route::post('/admin/permission/delete', '\Ajifatur\FaturHelper\Http\Controllers\PermissionController@delete')->name('admin.permission.delete');
+    Route::post('/admin/permission/sort', '\Ajifatur\FaturHelper\Http\Controllers\PermissionController@sort')->name('admin.permission.sort');
+    Route::post('/admin/permission/change', '\Ajifatur\FaturHelper\Http\Controllers\PermissionController@change')->name('admin.permission.change');
 
     // User Settings
     Route::get('/admin/settings/profile', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@profile')->name('admin.settings.profile');

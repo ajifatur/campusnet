@@ -26,7 +26,7 @@ class PermissionController extends \App\Http\Controllers\Controller
         $permissions = Permission::orderBy('num_order','asc')->get();
 
         // Get roles
-        $roles = Role::all();
+        $roles = Role::orderBy('num_order','asc')->get();
 
         // View
         return view('campusnet::admin/permission/index', [

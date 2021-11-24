@@ -61,6 +61,14 @@ class CampusnetServiceProvider extends ServiceProvider
             foreach(glob(base_path('vendor/ajifatur/faturhelper/src').'/Models/*.php') as $filename){
                 require_once $filename;
             }
+
+            // Load controllers
+            foreach(glob(base_path('vendor/ajifatur/faturhelper/src').'/Http/Controllers/*.php') as $filename){
+                require_once $filename;
+            }
+            foreach(glob(base_path('vendor/ajifatur/faturhelper/src').'/Http/Controllers/Auth/*.php') as $filename){
+                require_once $filename;
+            }
         }
 	}
 }
