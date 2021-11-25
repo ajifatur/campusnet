@@ -36,12 +36,18 @@
                         @endif
                         <div class="mb-3">
                             <input type="text" name="username" class="form-control {{ $errors->has('username') ? 'border-danger' : '' }}" value="{{ old('username') }}" placeholder="Email / Username" autofocus>
+                            @if($errors->has('username'))
+                            <div class="small text-danger text-start">{{ $errors->first('username') }}</div>
+                            @endif
                         </div>
                         <div class="mb-3">
                             <div class="input-group">
                                 <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'border-danger' : '' }}" placeholder="Password">
                                 <button type="button" class="btn {{ $errors->has('password') ? 'btn-outline-danger' : 'btn-outline-secondary' }} btn-toggle-password"><i class="bi-eye"></i></button>
                             </div>
+                            @if($errors->has('password'))
+                            <div class="small text-danger text-start">{{ $errors->first('password') }}</div>
+                            @endif
                         </div>
                         <button class="w-100 btn btn-primary" type="submit">Log in</button>
                         @if(config('campusnet.settings.socialite') == true)
