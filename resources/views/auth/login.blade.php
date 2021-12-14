@@ -25,9 +25,9 @@
 <body>
     <main class="d-flex align-items-center">
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-12 col-lg-6">
-                    <form class="login-box" method="post" action="{{ route('auth.post-login') }}">
+                    <form class="login-box" method="post" action="{{ route('auth.login') }}">
                         @csrf
                         <a href="/"><img class="mb-4" src="https://campusnet.id/assets/images/logo/campusnet.webp" alt="" height="60"></a>
                         <h1 class="h3 mb-3 fw-normal">Selamat Datang</h1>

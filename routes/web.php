@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Ajifatur\Helpers\RouteExt;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +29,6 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
     Route::get('/category', '\Ajifatur\Campusnet\Http\Controllers\Site\CategoryController@index')->name('site.category.index');
     Route::get('/category/{slug}', '\Ajifatur\Campusnet\Http\Controllers\Site\CategoryController@detail')->name('site.category.detail');
 
-    // Login
-    Route::get('/login', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@show')->name('auth.login');
-    Route::post('/login', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@authenticate')->name('auth.post-login');
-
     if(config('campusnet.settings.socialite') === true) {
         // Socialite
         Route::get('/auth/{provider}', '\Ajifatur\Campusnet\Http\Controllers\Auth\LoginController@redirectToProvider')->name('auth.login.provider');
@@ -40,22 +37,6 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
 });
 
 Route::group(['middleware' => ['campusnet.user']], function() {
-    // Logout
-    Route::post('/logout', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@logout')->name('auth.logout');
-    Route::post('/admin/logout', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@logout')->name('admin.logout');
-
-    // Dashboard
-    Route::get('/admin', '\Ajifatur\FaturHelper\Http\Controllers\DashboardController@index')->name('admin.dashboard');
-
-    // User Profile and Settings
-    Route::get('/admin/profile', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@index')->name('admin.profile');
-    Route::get('/admin/settings/profile', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@profile')->name('admin.settings.profile');
-    Route::post('/admin/settings/profile/update', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@updateProfile')->name('admin.settings.profile.update');
-    Route::get('/admin/settings/account', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@account')->name('admin.settings.account');
-    Route::post('/admin/settings/account/update', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@updateAccount')->name('admin.settings.account.update');
-    Route::get('/admin/settings/password', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@password')->name('admin.settings.password');
-    Route::post('/admin/settings/password/update', '\Ajifatur\Campusnet\Http\Controllers\UserSettingController@updatePassword')->name('admin.settings.password.update');
-
     // Role
     Route::get('/admin/role', '\Ajifatur\FaturHelper\Http\Controllers\RoleController@index')->name('admin.role.index');
     Route::get('/admin/role/create', '\Ajifatur\FaturHelper\Http\Controllers\RoleController@create')->name('admin.role.create');
@@ -126,3 +107,9 @@ Route::group(['middleware' => ['campusnet.user']], function() {
     Route::post('/admin/user/update', '\Ajifatur\Campusnet\Http\Controllers\UserController@update')->name('admin.user.update');
     Route::post('/admin/user/delete', '\Ajifatur\Campusnet\Http\Controllers\UserController@delete')->name('admin.user.delete');
 });
+
+// FaturHelper Routes
+RouteExt::login();
+RouteExt::logout();
+RouteExt::dashboard();
+RouteExt::user();
