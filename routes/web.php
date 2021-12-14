@@ -32,10 +32,10 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
     Route::get('/login', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@show')->name('auth.login');
     Route::post('/login', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@authenticate')->name('auth.post-login');
 
-    if(config('campusnet.settings.socialite') == true) {
+    if(config('campusnet.settings.socialite') === true) {
         // Socialite
-        Route::get('/auth/{provider}', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@redirectToProvider')->name('auth.login.provider');
-        Route::get('/auth/{provider}/callback', '\Ajifatur\FaturHelper\Http\Controllers\Auth\LoginController@handleProviderCallback')->name('auth.login.callback-provider');
+        Route::get('/auth/{provider}', '\Ajifatur\Campusnet\Http\Controllers\Auth\LoginController@redirectToProvider')->name('auth.login.provider');
+        Route::get('/auth/{provider}/callback', '\Ajifatur\Campusnet\Http\Controllers\Auth\LoginController@handleProviderCallback')->name('auth.login.provider.callback');
     }
 });
 

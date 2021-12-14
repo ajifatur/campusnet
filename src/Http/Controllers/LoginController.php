@@ -32,8 +32,8 @@ class LoginController extends \App\Http\Controllers\Controller
     {
         // Validator
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|min:6',
-            'password' => 'required|string|min:6',
+            'username' => 'required|string',
+            'password' => 'required|string',
         ]);
 
         // Check login type
