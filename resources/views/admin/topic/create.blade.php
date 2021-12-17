@@ -1,4 +1,4 @@
-@extends('campusnet::layouts/admin/main')
+@extends('faturhelper::layouts/admin/main')
 
 @section('title', 'Tambah Topik di '.$course->name)
 

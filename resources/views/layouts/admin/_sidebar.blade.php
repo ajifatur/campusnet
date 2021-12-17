@@ -1,69 +1,37 @@
 
-		<nav id="sidebar" class="sidebar js-sidebar">
-			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand" href="{{ route('home') }}" target="_blank">
-                    <span class="align-middle">CampusNet</span>
-                </a>
-				<ul class="sidebar-nav">
-					<li class="sidebar-item {{ Request::url() == route('admin.dashboard') ? 'active' : '' }}">
-						<a class="sidebar-link" href="{{ route('admin.dashboard') }}">
-                            <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
-                        </a>
-					</li>
-					
-                	@if(has_access('CourseController::index', Auth::user()->role_id, false) || has_access('CategoryController::index', Auth::user()->role_id, false) || has_access('MediaController::index', Auth::user()->role_id, false) || has_access('UserController::index', Auth::user()->role_id, false))
-						<li class="sidebar-header">Data</li>
-						@if(has_access('CourseController::index', Auth::user()->role_id, false))
-						<li class="sidebar-item {{ is_int(strpos(Request::url(), route('admin.course.index'))) ? 'active' : '' }}">
-							<a class="sidebar-link" href="{{ route('admin.course.index') }}">
-								<i class="align-middle" data-feather="tv"></i> <span class="align-middle">Kelas</span>
-							</a>
-						</li>
+<nav id="sidebar" class="sidebar js-sidebar">
+	<div class="sidebar-content js-simplebar">
+		<a class="sidebar-brand" href="/" target="_blank">
+			<span class="align-middle">CampusNet</span>
+		</a>
+		<ul class="sidebar-nav">
+			@foreach(menu() as $menu)
+				@if($menu['header'] != '' && count($menu['items']) > 0)
+					<li class="sidebar-header">{{ $menu['header'] }}</li>
+				@endif
+				@if(count($menu['items']) > 0)
+					@foreach($menu['items'] as $key=>$item)
+						@if(count($item['children']) > 0)
+							<li class="sidebar-item {{ eval_sidebar($item['active_conditions'], 'active') }}">
+								<a data-bs-target="#sidebar-subitem-{{ $key }}" data-bs-toggle="collapse" class="sidebar-link {{ eval_sidebar($item['active_conditions'], '', 'collapsed') }}">
+									<i class="align-middle {{ $item['icon'] }}" style="font-size: 1rem;"></i> <span class="align-middle">{{ $item['name'] }}</span>
+								</a>
+								<ul id="sidebar-subitem-{{ $key }}" class="sidebar-dropdown list-unstyled collapse {{ eval_sidebar($item['active_conditions'], 'show') }}" data-bs-parent="#sidebar">
+									@foreach($item['children'] as $subitem)
+									<li class="sidebar-item {{ eval_sidebar($subitem['active_conditions'], 'active') }}"><a class="sidebar-link" href="{{ $subitem['route'] }}">{{ $subitem['name'] }}</a></li>
+									@endforeach
+								</ul>
+							</li>
+						@else
+							<li class="sidebar-item {{ eval_sidebar($item['active_conditions'], 'active') }}">
+								<a class="sidebar-link" href="{{ $item['route'] }}">
+									<i class="align-middle {{ $item['icon'] }}" style="font-size: 1rem;"></i> <span class="align-middle">{{ $item['name'] }}</span>
+								</a>
+							</li>
 						@endif
-						@if(has_access('CategoryController::index', Auth::user()->role_id, false))
-						<li class="sidebar-item {{ is_int(strpos(Request::url(), route('admin.category.index'))) ? 'active' : '' }}">
-							<a class="sidebar-link" href="{{ route('admin.category.index') }}">
-								<i class="align-middle" data-feather="tag"></i> <span class="align-middle">Kategori</span>
-							</a>
-						</li>
-						@endif
-						@if(has_access('MediaController::index', Auth::user()->role_id, false))
-						<li class="sidebar-item {{ is_int(strpos(Request::url(), route('admin.media.index'))) ? 'active' : '' }}">
-							<a class="sidebar-link" href="{{ route('admin.media.index') }}">
-								<i class="align-middle" data-feather="book"></i> <span class="align-middle">Media</span>
-							</a>
-						</li>
-						@endif
-						@if(has_access('UserController::index', Auth::user()->role_id, false))
-						<li class="sidebar-item {{ is_int(strpos(Request::url(), route('admin.user.index'))) ? 'active' : '' }}">
-							<a class="sidebar-link" href="{{ route('admin.user.index') }}">
-								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Pengguna</span>
-							</a>
-						</li>
-						@endif
-					@endif
-
-                	@if(has_access('RoleController::index', Auth::user()->role_id, false))
-						<li class="sidebar-header">Master</li>
-						@if(has_access('RoleController::index', Auth::user()->role_id, false))
-						<li class="sidebar-item {{ is_int(strpos(Request::url(), route('admin.role.index'))) ? 'active' : '' }}">
-							<a class="sidebar-link" href="{{ route('admin.role.index') }}">
-								<i class="align-middle" data-feather="shuffle"></i> <span class="align-middle">Role</span>
-							</a>
-						</li>
-						@endif
-					@endif
-
-                	@if(has_access('PermissionController::index', Auth::user()->role_id, false))
-						<li class="sidebar-header">Pengaturan</li>
-						@if(has_access('PermissionController::index', Auth::user()->role_id, false))
-						<li class="sidebar-item {{ is_int(strpos(Request::url(), route('admin.permission.index'))) ? 'active' : '' }}">
-							<a class="sidebar-link" href="{{ route('admin.permission.index') }}">
-								<i class="align-middle" data-feather="shield"></i> <span class="align-middle">Hak Akses</span>
-							</a>
-						</li>
-						@endif
-					@endif
-				</ul>
-			</div>
-		</nav>
+					@endforeach
+				@endif
+			@endforeach
+		</ul>
+	</div>
+</nav>
