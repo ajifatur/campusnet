@@ -29,11 +29,11 @@ Route::group(['middleware' => ['campusnet.guest']], function() {
     Route::get('/category', '\Ajifatur\Campusnet\Http\Controllers\Site\CategoryController@index')->name('site.category.index');
     Route::get('/category/{slug}', '\Ajifatur\Campusnet\Http\Controllers\Site\CategoryController@detail')->name('site.category.detail');
 
-    if(config('campusnet.settings.socialite') === true) {
-        // Socialite
-        Route::get('/auth/{provider}', '\Ajifatur\Campusnet\Http\Controllers\Auth\LoginController@redirectToProvider')->name('auth.login.provider');
-        Route::get('/auth/{provider}/callback', '\Ajifatur\Campusnet\Http\Controllers\Auth\LoginController@handleProviderCallback')->name('auth.login.provider.callback');
-    }
+    // if(config('campusnet.settings.socialite') === true) {
+    //     // Socialite
+    //     Route::get('/auth/{provider}', '\Ajifatur\Campusnet\Http\Controllers\Auth\LoginController@redirectToProvider')->name('auth.login.provider');
+    //     Route::get('/auth/{provider}/callback', '\Ajifatur\Campusnet\Http\Controllers\Auth\LoginController@handleProviderCallback')->name('auth.login.provider.callback');
+    // }
 });
 
 Route::group(['middleware' => ['campusnet.user']], function() {
